@@ -1,0 +1,35 @@
+# This params.yaml overrides the theme's default params.yaml.
+# A full list of available params with their default values can be found in the theme's config/_default/params.yaml file.
+favicon: img/mylogo.png
+
+footer:
+  since: 2020
+
+sidebar:
+  emoji: 🇨🇳
+  subtitle: AAAAA.
+  avatar: img/mylogo.png
+
+comments:
+  enabled: true
+  provider: disqus
+
+widgets:
+  homepage:
+    - type: search
+    - type: archives
+      params:
+        limit: 5
+    - type: taxonomy
+      params:
+        limit: 10
+        type: categories
+        icon: categories
+    - type: taxonomy
+      params:
+        limit: 10
+        type: tags
+        icon: tag
+
+  page:
+    - type: toc
