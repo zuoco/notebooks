@@ -2,11 +2,11 @@
 title: "输入输出"
 description: "本文介绍C++的输入输出。"
 date: 2020-09-09
-draft: true
-image: A20250503.jpg
+draft: false
+image: aaa.jpg
 categories:
     - C++
-    - 流
+    - C++流
 ---
 
 # 1. 非格式化IO
