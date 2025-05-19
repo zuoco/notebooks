@@ -3,13 +3,11 @@ title: "BootLoader"
 description: "Linux系统启动引导"
 date: 2025-05-10T20:46:50+08:00
 image: 【哲风壁纸】冬日-冬日风景-桥.png
-math: 
-license: 
 hidden: false
 comments: true
-draft: flase
+draft: false
 categories:
-  - Linux
+  - Linux内核
   - BootLoader
 ---
 

@@ -9,7 +9,7 @@ hidden: false
 comments: true
 draft: false
 categories:
-  - Linux
+  - Linux内核
   - Linux内核模块
 ---
 

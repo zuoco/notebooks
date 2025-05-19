@@ -74,6 +74,13 @@
             </a>
         </li>
         {{ end }}
+        <!-- 添加分类菜单项 -->
+        <li {{ if eq $currentPage.RelPermalink "/categories/" }}class='current'{{ end }}>
+            <a href='{{ "/categories/" | relLangURL }}'>
+                {{ partial "helper/icon" "categories" }}
+                <span>{{ T "categories" }}</span>
+            </a>
+        </li>
         <li class="menu-bottom-section">
             <ol class="menu">
                 {{- $currentLanguageCode := .Language.Lang -}}

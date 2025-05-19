@@ -2,7 +2,6 @@
 title: "DeskFlow工程源码整体认识"
 description: 
 date: 2025-05-06T20:50:21+08:00
-image: AAA.jpg
 math: 
 license: 
 comments: true
@@ -11,7 +10,6 @@ categories:
   - 开源项目赏析
   - DeskFlow
 ---
-
 
 # 1. 项目目录结构
 ```

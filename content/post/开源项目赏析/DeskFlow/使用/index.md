@@ -2,7 +2,6 @@
 title: "Desklow初步认识"
 description: "Desklow使用方法"
 date: 2025-05-06T20:36:33+08:00
-image: AAA.jpg
 math: 
 license: 
 comments: true
