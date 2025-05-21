@@ -1,6 +1,6 @@
 ---
-title: "内存"
-description: "内存日志分析，内存故障分析等等"
+title: "Linux内存管理"
+description: "内存管理，内存故障分析等等"
 slug: "kernel-log"
 image: "AAA.jpg"
 style:

@@ -10,6 +10,7 @@ comments: true
 draft: false
 categories:
   - AI大模型
+  - 千问大模型
 ---
 
 # 1. AI模型的本地部署

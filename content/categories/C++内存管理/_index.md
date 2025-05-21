@@ -1,5 +1,5 @@
 ---
-title: "内存管理"
+title: "C++内存管理"
 description: "C++20内存专题"
 slug: "memory-management"
 image: "AAA.jpg"

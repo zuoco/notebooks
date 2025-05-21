@@ -8,7 +8,7 @@ license:
 comments: true
 draft: false
 categories:
-    - C++
+    - C++20
 ---
 
 # 1. operator<=>

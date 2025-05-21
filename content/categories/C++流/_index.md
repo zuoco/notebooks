@@ -1,5 +1,5 @@
 ---
-title: "流"
+title: "C++流"
 description: "C++20流专题"
 slug: "iostream"
 image: "AAA.png"
