@@ -42,7 +42,8 @@ Swap:           8191           0        8191
 ```
 
 # 2. 内核的OOM机制
-(后面会文章单独分析oom机制，这里简单介绍)OOM（Out of Memory）机制是为了应对系统内存耗尽的情况而设计的一种保护机制。当系统内存资源紧张到无法为新的内存分配请求提供足够的空间时，OOM Killer会被触发，依据一定的规则杀掉一些进程来释放内存。  
+(后面会文章单独分析oom机制，这里简单介绍)OOM（Out of Memory）   
+机制是为了应对系统内存耗尽的情况而设计的一种保护机制。当系统内存资源紧张到无法为新的内存分配请求提供足够的空间时，OOM Killer会被触发，依据一定的规则杀掉一些进程来释放内存。  
 1. `查询OOM事件： `   
 ```bash
 $ dmesg | grep -i "out of memory"
@@ -73,12 +74,14 @@ Node 0, zone   Normal   1958    592    249    207    133     32     98     87   
 ```bash
 Node <node_id>, zone <zone_name> <order0> <order1> ... <order10>
 ```
-Node 0：表示单个 NUMA 节点（无 NUMA 架构时仅一个节点）。     
-zone <zone_name>：内存区域类型，常见类型包括：     
+`Node 0`：  表示单个 NUMA 节点（无 NUMA 架构时仅一个节点）。     
+`zone <zone_name>`：内存区域类型，常见类型包括：     
   - DMA：直接内存访问（DMA）区域，用于 32 位设备的内存访问（地址范围有限）。    
   - DMA32：扩展的 32 位 DMA 区域（地址范围比 DMA 更广）。    
-  - Normal：普通内存区域，用于大多数内存分配。     
-<orderN>：表示阶（order）为 N 的空闲内存块数量(N从0开始)。每个阶的内存块大小为 2^N * PAGE_SIZE（通常 PAGE_SIZE = 4KB）    
+  - Normal：普通内存区域，用于大多数内存分配。  
+   
+`<orderN>`：   
+表示阶（order）为 N 的空闲内存块数量(N从0开始)。每个阶的内存块大小为 2^N * PAGE_SIZE（通常 PAGE_SIZE = 4KB）    
 
 对于32位的系统: 
 ```bash 
@@ -87,7 +90,8 @@ zone <zone_name>：内存区域类型，常见类型包括：
   HighMem  # 高内存区，在32位系统上用于扩展可寻址内存范围，对于64位系统，这个区域可能不存在。
 ```
 
-`碎片化判断`: `低阶空闲块越多，高阶阶空闲块越少`代表内存碎片化越严重。
+`碎片化判断`:   
+**低阶空闲块越多，高阶阶空闲块越少**代表内存碎片化越严重。
 
 ## 3.2. /proc/vmstat文件
 部分字段：  
@@ -181,30 +185,3 @@ sudo sysctl -p
 ```bash
 grep CONFIG_COMPACTION /boot/config-$(uname -r) # 输出CONFIG_COMPACTION=y表示启用了该功能。
 ```
-
-
-
-
-
-
-
-# 5. 太晚了，明天再整理
-
-
-内核文件：　/proc/sys/vm/oom_kill_allocating_task，　写入1表示优先杀死导致内存不足的任务，而不是选择评分最高的任务。　　　
-
-
-
-##
-
-使用 sar 或 vmstat 工具监控系统的内存使用变化：
-
-sar -r 1 10　　　　＃　研究一下命令的输出
-
-## 5.2. 
-Slab 分配器：　研究slabtop命令使用。
-
-
-
-
-
