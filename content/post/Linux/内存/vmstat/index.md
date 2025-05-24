@@ -2,7 +2,6 @@
 title: "vmstat"
 description: 
 date: 2025-05-21T22:01:50+08:00
-image: 
 math: 
 license: 
 hidden: false

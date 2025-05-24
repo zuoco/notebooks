@@ -1,8 +1,7 @@
 ---
-title: "EPOLL系统调用"
-description: 
+title: "EPOLL系统调用用法"
+description: "Linux内核异步IO之EPOLL - 第1篇"
 date: 2025-05-12T20:16:48+08:00
-image: 【哲风壁纸】夜景-夜空-月亮.png
 math: 
 license: 
 hidden: false
@@ -10,7 +9,7 @@ comments: true
 draft: false
 categories:
   - Linux内核
-  - EPOLL
+  - 异步IO
 ---
 
 # 1. EPOLL介绍

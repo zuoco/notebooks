@@ -30,7 +30,7 @@ services:
         id:
 
 pagination:
-    pagerSize: 3  # 每页显示的文章数量
+    pagerSize: 10  # 每页显示的文章数量
 
 permalinks:
     post: /p/:slug/

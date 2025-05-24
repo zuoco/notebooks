@@ -2,7 +2,6 @@
 title: "内存分析常用工具、内存相关内核日志"
 description: 
 date: 2025-05-20T00:18:27+08:00
-image: AAA.jpg
 math: 
 license: 
 hidden: false
