@@ -1,5 +1,5 @@
 ---
-title: "Desklow初步认识"
+title: "第一节 - Desklow初步认识"
 description: "Desklow使用方法"
 date: 2025-05-06T20:36:33+08:00
 math: 
@@ -12,8 +12,7 @@ categories:
 ---
 
 # 1. Deskflow介绍
-在多台电脑上共享一套键鼠，支持Windows、Linux、MacOS。     
-我们以1.21.2版本为例，介绍一下软件的功能，[Deskflow下载](https://github.com/deskflow/deskflow)。
+在多台电脑上共享一套键鼠，支持Windows、Linux、MacOS，功能类似于一个基于软件的KVM切换器，在不同机器之间无缝切换。 本专题中，我们以1.21.2版本为例，介绍一下软件的功能，项目地址[Deskflow](https://github.com/deskflow/deskflow)。
 
 # 2. 功能
 首次启动软件时，需要选择当前的电脑模式，是作为服务端还是客户端，界面如下：     

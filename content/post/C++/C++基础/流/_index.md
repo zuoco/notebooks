@@ -1,9 +1,9 @@
 ---
-title: "流IO"
+title: "第二章 - 流IO"
 menu:
   main:
     identifier: "cpp-io"
-    parent: "cpp"
+    parent: "cpp20-base"
     name: "流IO"
     weight: 2
 ---

@@ -5,5 +5,5 @@ menu:
     identifier: "qemu"
     parent: "virtualization"
     name: "Qemu"
-    weight: 2
+    weight: 3
 ---
