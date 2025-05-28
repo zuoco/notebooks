@@ -1,5 +1,5 @@
 ---
-title: "第一章 - 动态内存管理"
+title: "第一章 - 《动态内存管理》"
 menu:
   main:
     identifier: "cpp-memory"

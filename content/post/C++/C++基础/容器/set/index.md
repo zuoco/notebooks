@@ -1,5 +1,5 @@
 ---
-title: "关联容器之Set"
+title: "第4节 - 关联容器之Set"
 description: 
 date: 2025-05-26T21:55:17+08:00
 hidden: false
@@ -9,6 +9,21 @@ categories:
     - C++20
     - C++容器
 ---
+
+- [1. 初步认识](#1-初步认识)
+- [2. 自定义比较函数](#2-自定义比较函数)
+- [3. 迭代器](#3-迭代器)
+- [4. 插入元素](#4-插入元素)
+  - [4.1. insert与emplace](#41-insert与emplace)
+  - [4.2. emplace\_hint](#42-emplace_hint)
+- [5. 删除元素](#5-删除元素)
+  - [5.1. erase](#51-erase)
+- [6. 访问元素](#6-访问元素)
+  - [6.1. contains](#61-contains)
+  - [6.2. find](#62-find)
+- [7. 修改元素](#7-修改元素)
+  - [7.1. extract](#71-extract)
+
 
 # 1. 初步认识
 由于set底层是红黑树，因此set中的元素必须支持比较大小，对于自定义类型需要重载“<”，或者自定义一个比较函数并在创建set对象时指定。
@@ -20,17 +35,16 @@ template<
     class Allocator = std::allocator<Key>
 > class set;
 ```
-从模板类型的声明看，Compare是元素比较函数，Allocator是分配器，这两个都有默认参数，所以我们可以如下创建set对象：   
+从类木板的声明来看，Compare是用于元素比较的函数，Allocator是分配器，这两个都有默认的参数，所以我们可以如下创建set对象：   
 ```cpp
 # include <iostream>
 # include <set>
 
-inr main()
+int main()
 {
     /**
-     * 初始化时，元素顺序不重要
-     * 元素必须支持比较大小
-     * 如果有重复，只保留一个
+     * 初始化时，元素顺序不重要，set会进行排序；
+     * 元素必须支持比较大小，set会去除重复元素；
      */
     std::set<int> s{66, 99, 88};
     for (auto ptr = s.begin(); ptr != s.end(); ++ptr)
@@ -66,7 +80,7 @@ int main()
 ```
 
 # 3. 迭代器
-set迭代器所指向的对象是const的，不能通过迭代器修改元素。
+set迭代器所指向的对象是const的，因此不能通过迭代器修改元素。
 
 # 4. 插入元素
 ## 4.1. insert与emplace
@@ -85,7 +99,7 @@ int main()
 template< class... Args >
 iterator emplace_hint( const_iterator hint, Args&&... args );
 ```
-通过hint参数，告诉系统大约新元素插入到那里，"Args&&... args"用来构造新元素。这样能够减少比较次数，但是要求hint准确，如果hint不准确，那么。
+通过hint参数，告诉系统，新元素大约要插入到那里，参数"Args&&... args"用来构造新元素，这样能够减少比较次数，但是要求hint准确，如果hint不准确，可能导致效率更低。
 
 # 5. 删除元素
 ## 5.1. erase
@@ -169,6 +183,4 @@ Start: 1 2 3
 After extract and before insert: 2 3
 End: 2 3 4
 ```
-类似于先erase再insert，但是extract利用了已经创建好的对象，省去了创建对象的开销。
-
-
+显然，extract类似于先erase再insert，但是extract利用了已经创建好的对象，省去了创建对象的开销。

@@ -1,5 +1,5 @@
 ---
-title: "第二章 - 流IO"
+title: "第二章 - 《流IO》"
 menu:
   main:
     identifier: "cpp-io"

@@ -1,10 +1,7 @@
 ---
-title: "vector"
+title: "第2节 - 序列容器之vector"
 description: 
 date: 2025-05-04T00:03:33+08:00
-image: AAA.jpg
-math: 
-license: 
 comments: true
 draft: false
 categories:

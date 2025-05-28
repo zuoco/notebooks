@@ -1,17 +1,13 @@
 ---
-title: "什么是容器、容器分类"
+title: "第1节 - 什么是容器、容器分类"
 description: 
 date: 2025-05-04
-image: 【哲风壁纸】冬季艺术-可爱雪景.png
-math: 
-license: 
 comments: true
 draft: false
 categories:
     - C++20
     - C++容器
 ---
-
 
 # 1. 什么是容器
 就是一些标准库中设计好数据结构，使用**类模板**实现，用于存储和管理数据，支持对象的添加、删除、索引、遍历等功能。

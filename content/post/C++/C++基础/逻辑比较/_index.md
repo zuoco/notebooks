@@ -1,5 +1,5 @@
 ---
-title: "第三章 - 逻辑运算"
+title: "第三章 - 《逻辑运算》"
 menu:
   main:
     identifier: "cpp-logic"

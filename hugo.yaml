@@ -163,9 +163,9 @@ params:
                   limit: 50
             - type: tag-cloud
               params:
-                  limit: 50
-        page:
-            - type: toc  # 文章一侧显示目录
+                limit: 50
+        # page:
+        #     - type: toc  # 文章一侧显示目录
 
     opengraph:
         twitter:
