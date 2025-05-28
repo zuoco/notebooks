@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>DeskFlow on 阿左笔记</title>
+        <link>https://zuoco.github.io/post/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E8%B5%8F%E6%9E%90/deskflow/</link>
+        <description>Recent content in DeskFlow on 阿左笔记</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>阿左阿右</copyright>
+        <lastBuildDate>Sun, 25 May 2025 19:39:48 +0800</lastBuildDate><atom:link href="https://zuoco.github.io/post/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E8%B5%8F%E6%9E%90/deskflow/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>第三节 - DeskFlow跨平台抽象层</title>
+        <link>https://zuoco.github.io/p/%E7%AC%AC%E4%B8%89%E8%8A%82-deskflow%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%BD%E8%B1%A1%E5%B1%82/</link>
+        <pubDate>Sun, 25 May 2025 19:39:48 +0800</pubDate>
+        
+        <guid>https://zuoco.github.io/p/%E7%AC%AC%E4%B8%89%E8%8A%82-deskflow%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%BD%E8%B1%A1%E5%B1%82/</guid>
+        <description>&lt;h1 id=&#34;1-arch&#34;&gt;1. Arch
+&lt;/h1&gt;&lt;p&gt;首先，极简的说，DeskFlow的跨平台抽象层如下(先忽略类成员)：
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%89%E8%8A%82-deskflow%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%8A%BD%E8%B1%A1%E5%B1%82/arch.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;2-arch类设计&#34;&gt;2. Arch类设计
+&lt;/h1&gt;&lt;p&gt;Arch类是单例类，他们这个单例有点问题，但是人家确实是这么设计的。&lt;/p&gt;
+&lt;h2 id=&#34;21-arch类声明&#34;&gt;2.1. Arch类声明
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// arch.h
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ARCH_CONSOLE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ARCH_DAEMON&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ARCH_LOG&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ARCH_MULTITHREAD&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ARCH_NETWORK&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ARCH_SLEEP&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ARCH_STRING&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;             &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ARCH_TIME&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;public&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 构造函数是public的，但是没有问题，后面会分析
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;              
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;~&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;setInstance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;s_instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;private&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s_instance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;//静态私有单例
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;22-arch类实现&#34;&gt;2.2. Arch类实现
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s_instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 俄汉模式，初始化静态私有单例
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;23-单例构造&#34;&gt;2.3. 单例构造
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;assert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s_instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// 只能创建一个Arch对象
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;s_instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 危险的代理构造，实际并没有使用
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;s_instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;           &lt;span class=&#34;c1&#34;&gt;// 允许外部接管实例
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::~&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;在DeskFlow软件中，不管是Clinet还是Server，都只在程序启动时创建一个Arch对象，无他，代码也是仅在DeskFlow工程内部使用，所以就是public也不影响。&lt;/p&gt;
+&lt;h2 id=&#34;24-单例初始化&#34;&gt;2.4. 单例初始化
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;ARCH_NETWORK&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#if SYSAPI_WIN32
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;ArchMiscWindows&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#endif
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;25-单例访问&#34;&gt;2.5. 单例访问
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;assert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;s_instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;s_instance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;3-单例使用&#34;&gt;3. 单例使用
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;Arch&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;n&#34;&gt;arch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>第二节 - DeskFlow工程源码整体认识</title>
+        <link>https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-deskflow%E5%B7%A5%E7%A8%8B%E6%BA%90%E7%A0%81%E6%95%B4%E4%BD%93%E8%AE%A4%E8%AF%86/</link>
+        <pubDate>Tue, 06 May 2025 20:36:33 +0800</pubDate>
+        
+        <guid>https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-deskflow%E5%B7%A5%E7%A8%8B%E6%BA%90%E7%A0%81%E6%95%B4%E4%BD%93%E8%AE%A4%E8%AF%86/</guid>
+        <description>&lt;h1 id=&#34;1-项目构建系统&#34;&gt;1. 项目构建系统
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-deskflow%E5%B7%A5%E7%A8%8B%E6%BA%90%E7%A0%81%E6%95%B4%E4%BD%93%E8%AE%A4%E8%AF%86/Deskflow%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;2-项目目录结构&#34;&gt;2. 项目目录结构
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;deskflow-1.21.2/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── cmake/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── CMakeLists.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── cspell.json
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── deploy/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── doc/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── src/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── LICENSE
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── LICENSES/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── README.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── REUSE.toml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── SECURITY.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── sonar-project.properties
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── vcpkg-configuration.json
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── vcpkg.json
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;下面大概介绍一下主要文件的用途：&lt;/p&gt;
+&lt;h2 id=&#34;21-vcpkgjson和vcpkg-configurationjson&#34;&gt;2.1. vcpkg.json和vcpkg-configuration.json
+&lt;/h2&gt;&lt;p&gt;vcpkg是一个C++包管理工具，vcpkg-configuration.json 和 vcpkg.json 协同工作。vcpkg.json 列出了项目所需的依赖包，而 vcpkg-configuration.json 则指定了从哪些地方获取这些包。当执行 vcpkg install 命令时，vcpkg 会先依据 vcpkg-configuration.json 配置的注册表，再按照 vcpkg.json 列出的依赖，去下载、编译并集成所需的包到项目中。&lt;/p&gt;
+&lt;h2 id=&#34;22-sonar-projectproperties&#34;&gt;2.2. sonar-project.properties
+&lt;/h2&gt;&lt;p&gt;代码质量管理相关的文件。&lt;/p&gt;
+&lt;h2 id=&#34;23-securitymd&#34;&gt;2.3. SECURITY.md
+&lt;/h2&gt;&lt;p&gt;声明安全策略和漏洞管理流程。&lt;/p&gt;
+&lt;h2 id=&#34;24-reseuetoml&#34;&gt;2.4. RESEUE.toml
+&lt;/h2&gt;&lt;p&gt;统一管理Deskflow项目的版权归属和许可证声明，确保所有文件符合开源合规要求。&lt;/p&gt;
+&lt;h2 id=&#34;25-license&#34;&gt;2.5. LICENSE
+&lt;/h2&gt;&lt;p&gt;统一管理Deskflow项目的版权归属和许可证声明，确保所有文件符合开源合规要求。&lt;/p&gt;
+&lt;h2 id=&#34;26-cspelljson&#34;&gt;2.6. cspell.json
+&lt;/h2&gt;&lt;p&gt;拼写检查配置文件，用于定义 Deskflow 项目中允许的特定术语、技术词汇和专有名词，确保拼写检查工具（如 VS Code 的 Code Spell Checker）在扫描代码时 忽略合法词汇，同时标记拼写错误。&lt;/p&gt;
+&lt;h2 id=&#34;27-目录licenses&#34;&gt;2.7. 目录LICENSES
+&lt;/h2&gt;&lt;p&gt;包含四种开源许可证文件，定义了项目各组件的合法使用、修改和分发规则。&lt;/p&gt;
+&lt;h2 id=&#34;28-目录src&#34;&gt;2.8. 目录src
+&lt;/h2&gt;&lt;p&gt;包含源代码文件，包括主程序、工具类、配置文件等。&lt;/p&gt;
+&lt;h2 id=&#34;29-目录deploy&#34;&gt;2.9. 目录deploy
+&lt;/h2&gt;&lt;p&gt;部署脚本,定义了在不同平台上的部署方法.&lt;/p&gt;
+&lt;h2 id=&#34;210-cmake&#34;&gt;2.10. cmake
+&lt;/h2&gt;&lt;p&gt;cmake模块,定义了cmake的配置文件,负责构建过程中的依赖检查.&lt;/p&gt;
+&lt;h2 id=&#34;211-doc&#34;&gt;2.11. doc
+&lt;/h2&gt;&lt;p&gt;文档,包括用户指南、开发指南等.&lt;/p&gt;
+&lt;h1 id=&#34;3-子目录src&#34;&gt;3. 子目录src
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;src/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── apps/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── CMakeLists.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── lib/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── test/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;面对一个软件,我们可以将代码分为两部分: &lt;code&gt;架构层代码&lt;/code&gt;、&lt;code&gt;业务层代码&lt;/code&gt;。 &lt;br&gt;
+&lt;code&gt;apps&lt;/code&gt;: 业务层代码，包含了具体的业务逻辑和功能实现。
+&lt;code&gt;lib&lt;/code&gt;: 架构层代码，包含了框架、工具类、配置文件等。  &lt;br&gt;
+&lt;code&gt;test&lt;/code&gt;: 测试代码，包含了单元测试、集成测试等。&lt;/p&gt;
+&lt;h2 id=&#34;32-apps&#34;&gt;3.2. apps
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;apps/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── CMakeLists.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── deskflow-client/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── deskflow-core/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── deskflow-daemon/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── deskflow-gui/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── deskflow-server/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── res
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;apps目录下就是业务层的代码了，通过第一节，我们知道，DeskFlow这个软件是一个“服务器－客户端”的模式，DeskFlow编译成功后有３个可执行文件: deskflow、deskflow-server、deskflow-client。    &lt;br&gt;
+&lt;code&gt;deskflow-server&lt;/code&gt;:&lt;br&gt;
+就是服务端代码，也就运行在实际插入物理键盘鼠标的电脑上;  &lt;br&gt;
+&lt;code&gt;deskflow-client&lt;/code&gt;: &lt;br&gt;
+就是客户端代码，和服务端相对;    &lt;br&gt;
+&lt;code&gt;deskflow-core&lt;/code&gt;: &lt;br&gt;
+deskflow就是deskflow-core程序，既是客户端也是服务端，运行是根据传入的命令行参数来判断是运行为服务端还是运行为客户端。    &lt;br&gt;
+&lt;code&gt;deskflow-gui&lt;/code&gt;: &lt;br&gt;
+GUI代码，基于Qt。&lt;/p&gt;
+&lt;h2 id=&#34;31-lib&#34;&gt;3.1. lib
+&lt;/h2&gt;&lt;p&gt;DeskFlow的底层逻辑，比如跨平台抽象层。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>第一节 - Desklow初步认识</title>
+        <link>https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/</link>
+        <pubDate>Tue, 06 May 2025 20:36:33 +0800</pubDate>
+        
+        <guid>https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/</guid>
+        <description>&lt;h1 id=&#34;1-deskflow介绍&#34;&gt;1. Deskflow介绍
+&lt;/h1&gt;&lt;p&gt;在多台电脑上共享一套键鼠，支持Windows、Linux、MacOS，功能类似于一个基于软件的KVM切换器，在不同机器之间无缝切换。 本专题中，我们以1.21.2版本为例，介绍一下软件的功能，项目地址&lt;a class=&#34;link&#34; href=&#34;https://github.com/deskflow/deskflow&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Deskflow&lt;/a&gt;。&lt;/p&gt;
+&lt;h1 id=&#34;2-功能&#34;&gt;2. 功能
+&lt;/h1&gt;&lt;p&gt;首次启动软件时，需要选择当前的电脑模式，是作为服务端还是客户端，界面如下：  &lt;br&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/Deskflow.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt; &lt;br&gt;
+接入物理键盘鼠标的就是服务端，其他电脑就是客户端。&lt;/p&gt;
+&lt;h1 id=&#34;3-软件配置&#34;&gt;3. 软件配置
+&lt;/h1&gt;&lt;p&gt;【Edit】&amp;ndash;&amp;gt;【Preferences】      &lt;br&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE.png&#34;
+	width=&#34;1187&#34;
+	height=&#34;808&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE_hu_60a4915809f77f8c.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE_hu_5694d8caf994959c.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;146&#34;
+		data-flex-basis=&#34;352px&#34;
+	
+&gt;   &lt;br&gt;
+有三项配置：Basics、APP、Enable TSL Encryption。&lt;br&gt;
+&lt;code&gt;1. Basics&lt;/code&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;阻止计算机休眠。&lt;/li&gt;
+&lt;li&gt;使用服务器键盘语言（该配置在客户端上使用），因为客户端和服务端键盘语言可能不一致，统一使用服务器键盘语言，这样就一致了。&lt;/li&gt;
+&lt;li&gt;反转鼠标滚轮滚动时页面滚动方向（该配置在客户端上使用），这算是一个个性化配置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;2. APP&lt;/code&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;应用启动时检查更新。&lt;/li&gt;
+&lt;li&gt;关闭应用窗口时，后台运行。&lt;/li&gt;
+&lt;li&gt;后台启动。&lt;/li&gt;
+&lt;li&gt;Tray Icon style，系统托盘图标样式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;3. Enable TSL Encryption&lt;/code&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;启用TSL加密，这是一个安全配置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E8%BD%AF%E4%BB%B6%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE.png&#34;
+	width=&#34;822&#34;
+	height=&#34;808&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E8%BD%AF%E4%BB%B6%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE_hu_8658b74575688fc3.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E8%BD%AF%E4%BB%B6%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE_hu_a83714c8cb9d441d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;101&#34;
+		data-flex-basis=&#34;244px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Network Address，配置网络地址，默认即可。&lt;/li&gt;
+&lt;li&gt;Logs，配置日志文件保存路径、日志级别。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;服务端和客户端在这一层面的配置界面是一样的。&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&#34;4-服务端&#34;&gt;4. 服务端
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE.png&#34;
+	width=&#34;877&#34;
+	height=&#34;181&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE_hu_f4dba8eabacbebd9.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE_hu_d935cc4207768b33.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;484&#34;
+		data-flex-basis=&#34;1162px&#34;
+	
+&gt;&lt;br&gt;
+(1) 加载已有的配置文件，如果没有现成的配置文件，就点击【Configure Server】。&lt;br&gt;
+(2) 配置服务器信息，界面如下：     &lt;br&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%95%8C%E9%9D%A2.png&#34;
+	width=&#34;1660&#34;
+	height=&#34;770&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%95%8C%E9%9D%A2_hu_ddd00c6ee2eb057f.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%95%8C%E9%9D%A2_hu_38b6a1b87ae19ee4.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;215&#34;
+		data-flex-basis=&#34;517px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;【Computers】&lt;/code&gt;&lt;br&gt;
+该项设置配置客户端与服务端的布局，中间的&lt;code&gt;GEM12&lt;/code&gt;是服务器，服务器周围的格子用于放置客户端，通过拖动右上角的电脑图标来创建客户端PC，如下图所示：         &lt;br&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%88%9B%E5%BB%BA%E5%AE%A2%E6%88%B7%E7%AB%AF.png&#34;
+	width=&#34;1190&#34;
+	height=&#34;769&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%88%9B%E5%BB%BA%E5%AE%A2%E6%88%B7%E7%AB%AF_hu_c2e1266062c326c8.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%88%9B%E5%BB%BA%E5%AE%A2%E6%88%B7%E7%AB%AF_hu_c9f30fc9bd734eb.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;154&#34;
+		data-flex-basis=&#34;371px&#34;
+	
+&gt;      &lt;br&gt;
+双击创建的客户端PC，就可以配置客户端的信息了，如下图所示：    &lt;br&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%AE%A2%E6%88%B7%E7%AB%AFPC%E9%85%8D%E7%BD%AE.png&#34;
+	width=&#34;552&#34;
+	height=&#34;1002&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%AE%A2%E6%88%B7%E7%AB%AFPC%E9%85%8D%E7%BD%AE_hu_70e2c580e58fbf3.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%AE%A2%E6%88%B7%E7%AB%AFPC%E9%85%8D%E7%BD%AE_hu_a77dccc9b536a425.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;55&#34;
+		data-flex-basis=&#34;132px&#34;
+	
+&gt;      &lt;br&gt;
+该页面中需要注意的是Fixes，部分按键在一些平台上不可用，可以通过Fixes来修复，例如在Linux系统上Scroll Lock键不可用。&lt;/p&gt;
+&lt;h1 id=&#34;5-键鼠在pc之间的切换逻辑&#34;&gt;5. 键鼠在PC之间的切换逻辑
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/PC%E4%B9%8B%E9%97%B4%E5%88%87%E6%8D%A2%E9%80%BB%E8%BE%91.png&#34;
+	width=&#34;1190&#34;
+	height=&#34;769&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/PC%E4%B9%8B%E9%97%B4%E5%88%87%E6%8D%A2%E9%80%BB%E8%BE%91_hu_c8bffa386e7992a6.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/PC%E4%B9%8B%E9%97%B4%E5%88%87%E6%8D%A2%E9%80%BB%E8%BE%91_hu_50a2895437ebc6d5.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;154&#34;
+		data-flex-basis=&#34;371px&#34;
+	
+&gt;&lt;br&gt;
+红框区域提供了两种切换方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在两台PC之间的边界超过指定时间切换到对应的PC。&lt;/li&gt;
+&lt;li&gt;在指定的时间内，两次tap切换到对应的PC，这个没有好像有BUG，不起作用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;6-客户端&#34;&gt;6. 客户端
+&lt;/h1&gt;&lt;p&gt;客户端配置： 【3. 软件配置】&lt;br&gt;
+客户端使用： &lt;br&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8.png&#34;
+	width=&#34;2518&#34;
+	height=&#34;169&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8_hu_168ef1d87e3601ae.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-desklow%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8_hu_45fb5c0da03fc994.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1489&#34;
+		data-flex-basis=&#34;3575px&#34;
+	
+&gt;
+输入服务器IP或者服务器名称，然后点击连接。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>第一章 - 《动态内存管理》 on 阿左笔记</title>
+        <link>https://zuoco.github.io/post/c&#43;&#43;/c&#43;&#43;%E5%9F%BA%E7%A1%80/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
+        <description>Recent content in 第一章 - 《动态内存管理》 on 阿左笔记</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>阿左阿右</copyright>
+        <lastBuildDate>Sun, 04 May 2025 00:01:49 +0800</lastBuildDate><atom:link href="https://zuoco.github.io/post/c++/c++%E5%9F%BA%E7%A1%80/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>动态内存管理</title>
+        <link>https://zuoco.github.io/p/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</link>
+        <pubDate>Sun, 04 May 2025 00:01:49 +0800</pubDate>
+        
+        <guid>https://zuoco.github.io/p/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</guid>
+        <description>&lt;img src="https://zuoco.github.io/p/%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E3%80%90%E5%93%B2%E9%A3%8E%E5%A3%81%E7%BA%B8%E3%80%91%E5%A4%9C%E6%99%AF-%E6%98%9F%E7%A9%BA-%E6%9C%88%E4%BA%AE.png" alt="Featured image of post 动态内存管理" /&gt;&lt;h1 id=&#34;1-概述&#34;&gt;1. 概述
+&lt;/h1&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

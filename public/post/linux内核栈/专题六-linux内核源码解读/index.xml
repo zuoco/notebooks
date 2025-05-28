@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>专题六 《内核源码解读》 on 阿左笔记</title>
+        <link>https://zuoco.github.io/post/linux%E5%86%85%E6%A0%B8%E6%A0%88/%E4%B8%93%E9%A2%98%E5%85%AD-linux%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/</link>
+        <description>Recent content in 专题六 《内核源码解读》 on 阿左笔记</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>阿左阿右</copyright><atom:link href="https://zuoco.github.io/post/linux%E5%86%85%E6%A0%B8%E6%A0%88/%E4%B8%93%E9%A2%98%E5%85%AD-linux%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/index.xml" rel="self" type="application/rss+xml" />
+    </channel>
+</rss>

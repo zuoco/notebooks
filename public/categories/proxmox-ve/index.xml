@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Proxmox VE on 阿左笔记</title>
+        <link>https://zuoco.github.io/categories/proxmox-ve/</link>
+        <description>Recent content in Proxmox VE on 阿左笔记</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>阿左阿右</copyright>
+        <lastBuildDate>Tue, 27 May 2025 22:46:37 +0800</lastBuildDate><atom:link href="https://zuoco.github.io/categories/proxmox-ve/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>第二节 Pve节点部署</title>
+        <link>https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-pve%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2/</link>
+        <pubDate>Tue, 27 May 2025 22:46:37 +0800</pubDate>
+        
+        <guid>https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-pve%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2/</guid>
+        <description>&lt;h1 id=&#34;单节点部署&#34;&gt;单节点部署
+&lt;/h1&gt;&lt;p&gt;一个节点就是一台物理设备，实际安装过程和安装一个操作系统基本一样，安装后：&lt;br&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-pve%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2/pve.png&#34;
+	width=&#34;1910&#34;
+	height=&#34;982&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-pve%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2/pve_hu_3149e5959cb7beaf.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-pve%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2/pve_hu_2e27c1a9a255c00b.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;194&#34;
+		data-flex-basis=&#34;466px&#34;
+	
+&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-pve%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2/pve2.png&#34;
+	width=&#34;1916&#34;
+	height=&#34;981&#34;
+	srcset=&#34;https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-pve%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2/pve2_hu_d0c233822bfca853.png 480w, https://zuoco.github.io/p/%E7%AC%AC%E4%BA%8C%E8%8A%82-pve%E8%8A%82%E7%82%B9%E9%83%A8%E7%BD%B2/pve2_hu_e1d8e53320b47de9.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;195&#34;
+		data-flex-basis=&#34;468px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;集群部署&#34;&gt;集群部署
+&lt;/h1&gt;&lt;p&gt;需要至少2台物理设备，没有条件，先不做了。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>第一节 PVE介绍</title>
+        <link>https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-pve%E4%BB%8B%E7%BB%8D/</link>
+        <pubDate>Tue, 27 May 2025 21:55:22 +0800</pubDate>
+        
+        <guid>https://zuoco.github.io/p/%E7%AC%AC%E4%B8%80%E8%8A%82-pve%E4%BB%8B%E7%BB%8D/</guid>
+        <description>&lt;h1 id=&#34;1-基本介绍&#34;&gt;1. 基本介绍
+&lt;/h1&gt;&lt;p&gt;Proxmox VE（Proxmox Virtual Environment），奥地利企业“Proxmox Server Solutions GnbH”开发的虚拟化产品，基于Debian，于2008年发布第一个版本稳定版Proxmox VE 1.0。&lt;/p&gt;
+&lt;h1 id=&#34;2-功能特性&#34;&gt;2. 功能特性
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;服务器虚拟化&lt;/code&gt;  &lt;br&gt;
+基于KVM技术提供虚拟化支持，可以运行Linux和Windows操作系统。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Linux容器&lt;/code&gt;   &lt;br&gt;
+基于LXC技术提供Linux容器支持，通过PCT(Proxmox Container Tools)就可以直接使用Proxmox VE的存储资源和网络资源。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;基于Web的管理&lt;/code&gt;&lt;br&gt;
+通过web登陆对服务器进行管理，不需要安装客户端软件。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;高可用&lt;/code&gt;&lt;br&gt;
+基于Linux HA技术。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;去中心化&lt;/code&gt;&lt;br&gt;
+Prexmox VE基于数据库设计了一种专用的文件系统用于保存配置文件，这个文件系统通过Corosync将配置文件实时复制到PVE集群的所有节点，不再需要部署一个单独的管理端服务器，这就是PVE的去中心化设计。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;集成Ceph分布式存储&lt;/code&gt;&lt;br&gt;
+通过Web端即可运行管理Ceph。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;集成备份与还原&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;企业级备份&lt;/code&gt;&lt;br&gt;
+Proxomx Backup Server与集成的备份与还原功能相比更强大。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;集成防火墙&lt;/code&gt;  &lt;br&gt;
+通过Web页面对虚拟机以及容器的网络流量进行过滤。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;支持多种身份认证&lt;/code&gt;&lt;br&gt;
+包括Microsoft活动目录、LDAP、双因素身份认证等等。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

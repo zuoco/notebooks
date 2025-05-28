@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>BootLoader on 阿左笔记</title>
+        <link>https://zuoco.github.io/categories/bootloader/</link>
+        <description>Recent content in BootLoader on 阿左笔记</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>阿左阿右</copyright>
+        <lastBuildDate>Sat, 10 May 2025 20:46:50 +0800</lastBuildDate><atom:link href="https://zuoco.github.io/categories/bootloader/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>BootLoader</title>
+        <link>https://zuoco.github.io/p/bootloader/</link>
+        <pubDate>Sat, 10 May 2025 20:46:50 +0800</pubDate>
+        
+        <guid>https://zuoco.github.io/p/bootloader/</guid>
+        <description>&lt;h1 id=&#34;1-bootloader&#34;&gt;1. BootLoader
+&lt;/h1&gt;&lt;p&gt;Bootloader是操作系统的“引导程序”以及“引导管理程序”，操作系统的启动流程可以简单理解为：&lt;br&gt;
+&lt;strong&gt;[上电]&lt;/strong&gt; &amp;ndash;&amp;gt; &lt;strong&gt;[UEFI]&lt;/strong&gt; &amp;ndash;&amp;gt; &lt;strong&gt;[bootloader]&lt;/strong&gt; &amp;ndash;&amp;gt; &lt;strong&gt;[内核]&lt;/strong&gt; 。&lt;br&gt;
+显然，Bootloader的作用就是将内核加载到内存中，然后由于内核来加载操作系统的其他组件/服务，如文件系统，文件管理器，图形界面等。在linux生态中，常见的Bootloader有两种，Grub(用于X86架构)，U-Boot(用于ARM架构)。其中&lt;code&gt;引导&lt;/code&gt;就是进行一些硬件的检测、初始化的任务，然后将内核加载到内存中来启动内核，&lt;code&gt;引导管理&lt;/code&gt;就是当有多个内核时，在屏幕上显示一个菜单让用户选择要启动的哪个内核。
+&lt;img src=&#34;https://zuoco.github.io/p/bootloader/BootLoader.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;2-grub&#34;&gt;2. Grub
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;grub程序保存在那里？&lt;/code&gt;&lt;br&gt;
+grub程序保存在EFI分区中，EFI分区挂在于位于/boot/efi目录下。&lt;br&gt;
+&lt;code&gt;grub配置文件保存在那里？&lt;/code&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;/boot/grub/grub.cfg文件，定义了grub是如何引导内核的。&lt;/li&gt;
+&lt;li&gt;/etc/default/grub文件，定义grub全局行为和启动参数，然后生成/boot/grub/grub.cfg文件，下面讲解以下该配置文件的内容：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_TIMEOUT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;                &lt;span class=&#34;c1&#34;&gt;# 启动菜单的超时时间，超时后启动默认内核,-1表示无限等待。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_TIMEOUT_STYLE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;menu        &lt;span class=&#34;c1&#34;&gt;# 启动菜单的样式，menu表示菜单样式，hidden表示隐藏菜单。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_DISTRIBUTOR&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;sed &lt;span class=&#34;s1&#34;&gt;&amp;#39;s, release .*$,,g&amp;#39;&lt;/span&gt; /etc/system-release&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# 动态提取发行版名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_DEFAULT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;saved             &lt;span class=&#34;c1&#34;&gt;# 默认启动项由上一次保存的选择决定&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_DISABLE_SUBMENU&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 禁用子菜单，所有内核和启动项直接显示在主菜单中。若设为 false，旧内核会折叠到“Advanced options”子菜单下。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_TERMINAL_OUTPUT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;console&amp;#34;&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# 强制GRUB仅使用文本控制台输出，禁用图形化终端（如gfxterm）。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_CMDLINE_LINUX&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;rhgb quiet&amp;#34;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# rhgb：启用Plymouth图形启动动画（常见于RHEL/CentOS/Fedora）。quiet：隐藏内核启动日志，仅显示简要信息。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_DISABLE_RECOVERY&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# 禁止恢复模式（Recovery Mode）的启动项。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GRUB_ENABLE_BLSCFG&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;      &lt;span class=&#34;c1&#34;&gt;# 启用 Boot Loader Specification (BLS) 配置，取代传统的grub.cfg生成方式。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;3-u-boot&#34;&gt;3. U-Boot
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;XIP设备&lt;br&gt;
+非XIP设备中存储的代码需要从存储设备中加载到内存中，然后才能执行，而XIP存储设备中的代码可以直接执行，XIP设备有SRAM、BROM等等，非XIP设备有EMMC、NANDFLASH、SD卡等等。&lt;/li&gt;
+&lt;li&gt;ARM-Linux启动流程&lt;br&gt;
+U-Boot一般分为两个阶段，uboot-SPL和uboo-proper，CPU上电首先执行BROM中的程序(由芯片厂写入)，该程序会根据芯片的引脚电平或者寄存器配置确定启动模式(从那个设备启动系统)，例如系统安装在SD卡，BROM中的程序会初始化SD卡，然后拷贝uboot-spl到SRAM中，开始执行uboot-spl中的程序，uboot-spl程序会初始化LDDR内存、pll、gpio等等硬件，然后从SD卡中加载uboot-proper到LDDR中，并跳转到程序的入口地址执行uboot-proper程序。uboot还会初始化一些其他设备，例如网卡等，然后从SD卡中加载内核文件。&lt;br&gt;
+&lt;img src=&#34;https://zuoco.github.io/p/bootloader/u-boot.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;br&gt;
+&lt;code&gt;参考&lt;/code&gt;:&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://linux-sunxi.org/Bootable_SD_card#SD_Card_Layout&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;4-修改grub配置&#34;&gt;4. 修改Grub配置
+&lt;/h1&gt;&lt;p&gt;GRUB配置文件： &lt;code&gt;/boot/grub2/grub.cfg&lt;/code&gt;，但是该配置文件是生成的，不可直接手动修改，我们通过修改&lt;code&gt;/etc/default/grub&lt;/code&gt;文件和&lt;code&gt;/etc/grub.d/&lt;/code&gt;目录下的配置文件生成的。&lt;/p&gt;
+&lt;h2 id=&#34;41-fedora系统&#34;&gt;4.1. Fedora系统
+&lt;/h2&gt;&lt;p&gt;修改&lt;code&gt;/etc/default/grub&lt;/code&gt;文件，然后执行&lt;code&gt;sudo grub2-mkconfig -o /boot/grub2/grub.cfg&lt;/code&gt;命令来生成新的&lt;code&gt;/boot/grub2/grub.cfg&lt;/code&gt;文件。&lt;/p&gt;
+&lt;h2 id=&#34;42-debian系统&#34;&gt;4.2. Debian系统
+&lt;/h2&gt;&lt;p&gt;修改&lt;code&gt;/etc/default/grub&lt;/code&gt;文件，然后执行&lt;code&gt;sudo update-grub&lt;/code&gt;命令来生成新的&lt;code&gt;/boot/grub/grub.cfg&lt;/code&gt;文件。&lt;/p&gt;
+&lt;h1 id=&#34;5-查看grub配置信息&#34;&gt;5. 查看Grub配置信息
+&lt;/h1&gt;&lt;h2 id=&#34;51-fedora系统&#34;&gt;5.1. Fedora系统
+&lt;/h2&gt;&lt;h3 id=&#34;511-grubby命令&#34;&gt;5.1.1. grubby命令
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;查看默认引导项&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo grubby --info&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;DEFAULT
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;列出所有引导项&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo grubby --info&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ALL
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;列出所有引导项的索引&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo grubby --info&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;# 0是引导项的索引，使用sudo grubby --info=ALL命令查看&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;52-debian系统&#34;&gt;5.2. Debian系统
+&lt;/h2&gt;&lt;p&gt;使用grep命令查看即可。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

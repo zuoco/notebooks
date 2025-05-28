@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Qemu on 阿左笔记</title>
+        <link>https://zuoco.github.io/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/qemu/</link>
+        <description>Recent content in Qemu on 阿左笔记</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>阿左阿右</copyright><atom:link href="https://zuoco.github.io/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/qemu/index.xml" rel="self" type="application/rss+xml" />
+    </channel>
+</rss>
