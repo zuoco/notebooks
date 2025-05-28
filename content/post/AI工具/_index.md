@@ -1,9 +1,9 @@
 ---
-title: "AI大模型"
+title: "AI工具"
 menu:
   main:
       identifier: "llm-ai"
-      name: "AI大模型"
+      name: "AI工具"
       weight: 40
       params:
           icon: ai

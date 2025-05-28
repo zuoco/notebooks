@@ -6,7 +6,7 @@ image: AAA.jpg
 comments: true
 draft: false
 categories:
-    - 虚拟化与云计算
+    - 虚拟化
     - Qemu
 ---
 

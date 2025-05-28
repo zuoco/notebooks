@@ -1,9 +1,9 @@
 ---
-title: "BootLoader"
+title: "专题五 《Bootloader》"
 menu:
   main:
     identifier: "linux-boot"
     parent: "linux"
     name: "BootLoader"
-    weight: 4
+    weight: 5
 ---

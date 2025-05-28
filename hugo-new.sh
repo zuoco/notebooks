@@ -1,5 +1,3 @@
-!#/bin/bash
-
 path=$(pwd)
-cd "/home/zcli/myBlog/notebooks"
+cd "/home/zcli/notebooks"
 hugo new content "$path/index.md" 

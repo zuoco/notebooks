@@ -6,7 +6,10 @@ math:
 license: 
 hidden: false
 comments: true
-draft: true
+draft: false
+categories:
+  - 开源项目赏析
+  - FreeCAD
 ---
 
 # FreeCAD - 1.0.1

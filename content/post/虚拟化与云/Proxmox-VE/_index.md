@@ -1,5 +1,5 @@
 ---
-title: "Proxmox VE"
+title: "《Proxmox VE》"
 menu:
   main:
     identifier: "proxmox"
