@@ -2,7 +2,6 @@
 title: "使用Ollama本地部署Qwen3-14b"
 description: 
 date: 2025-05-18T23:17:13+08:00
-image: AAA.jpg
 math: 
 license: 
 hidden: false

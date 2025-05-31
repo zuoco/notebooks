@@ -2,7 +2,6 @@
 title: "iBMC服务器管理软件"
 description: 
 date: 2025-05-08T21:01:19+08:00
-image: AAA.jpg
 math: 
 license: 
 hidden: false

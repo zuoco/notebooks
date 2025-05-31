@@ -3,7 +3,6 @@ title: "输入输出"
 description: "本文介绍C++的输入输出。"
 date: 2020-09-09
 draft: false
-image: aaa.jpg
 categories:
     - C++20
 ---

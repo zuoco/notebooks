@@ -2,7 +2,6 @@
 title: "Git基本使用"
 description:
 date: 2025-05-07T21:48:29+08:00
-image: git.jpg
 math: 
 license: 
 hidden: false

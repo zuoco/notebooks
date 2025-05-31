@@ -2,7 +2,6 @@
 title: "Linux内核构建、内核模块构建"
 description: 
 date: 2025-05-10T18:06:49+08:00
-image: AAA.jpg
 math: 
 license: 
 hidden: false

@@ -2,7 +2,6 @@
 title: "三路比较运算符"
 description: "C++20三路比较运算符: operator<=>"
 date: 2025-05-04
-image: AAA.jpg
 math: 
 license: 
 comments: true
