@@ -7,7 +7,6 @@ comments: true
 draft: false
 categories:
   - 虚拟化
-  - Proxmox VE
 ---
 
 # 1. 基本介绍

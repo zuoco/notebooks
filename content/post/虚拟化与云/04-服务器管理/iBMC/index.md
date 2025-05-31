@@ -9,8 +9,7 @@ hidden: false
 comments: true
 draft: false
 categories:
-  - 虚拟化与云计算
-  - 服务器管理
+  - 虚拟化
 ---
 
 # iBMC服务器管理软件
