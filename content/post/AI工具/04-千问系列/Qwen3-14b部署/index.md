@@ -34,7 +34,7 @@ NVIDIA GTX 5060 Ti 16GB
 `选择需要的版本：`    
 ![](nvidia2.png)   
 ![](nvidia3.png)
-根据下面网页的提示选择系统版本后，下方会给出对应的安装过程，根据指示安装即可，安装完成后在终端查看显卡信息：     
+根据下面网页的提示选择系统版本后，页面下方会给出对应的安装过程，根据指示安装即可，安装完成后可以在终端查看显卡信息：     
 ```bash
 zcli@fedora:~$ nvidia-smi 
 Sun May 18 22:05:08 2025       
@@ -74,33 +74,33 @@ Sun May 18 22:05:08 2025
 3. 前端接入，以CherryStudio为例；   
 
 # 7. 安装ollama
-登陆ollama官网，发现官网直接给出一行命令，该命令自动下载并安装ollama：  
+登陆ollama官网，官网直接给出了一行命令，该命令可以自动下载并安装ollama：  
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
-该命令会下载一个脚本，该脚本使用curl命令下载ollama安装文件，然后并执行安装文件，但是这个curl始终不能连接网络，所以只能手动下载安装文件：    
-1. 第一步： 下载安装脚本   
+该命令会下载一个脚本，该脚本使用curl命令下载ollama安装程序，并执行安装程序，但是这个curl始终不能连接网络，所以只能手动下载安装文件：       
+1. 第一步： 下载安装脚本     
 ```bash
 curl -fsSL https://ollama.com/install.sh -o ollama_install.sh # 下载安装脚本
 ```
-2. 第二步： 从安装脚本查找下载链接
-在打开这个脚本搜索`https://ollama.com/download/ollama-linux-`，找到类似如下代码：  
+2. 第二步： 从安装脚本查找下载链接    
+打开下载下来的脚本，搜索`https://ollama.com/download/ollama-linux-`，找到类似如下代码：  
 ```bash
 status "Downloading Linux ${ARCH} bundle"
 curl --fail --show-error --location --progress-bar \
     "https://ollama.com/download/ollama-linux-${ARCH}.tgz${VER_PARAM}" | \
     $SUDO tar -xzf - -C "$OLLAMA_INSTALL_DIR"
 ```
-这段代码就是下载ollama安装文件的代码，并解压放到`$OLLAMA_INSTALL_DIR`目录下，就是`usr/local/`目录，至于下载链接，添加`echo "https://ollama.com/download/ollama-linux-${ARCH}.tgz${VER_PARAM}"`命令，然后运行脚本，打印出来的链接就是了。  
+这段代码就是下载ollama安装文件的代码，从代码来看，安装文件会被解压到`$OLLAMA_INSTALL_DIR`目录下，其实就是`usr/local/`目录，我门先不管这些，在这段脚本前添加`echo "https://ollama.com/download/ollama-linux-${ARCH}.tgz${VER_PARAM}"`命令，然后运行脚本，打印出来的链接就是了。  
 
-3. 下载安装文件   
-复制链接直接到浏览器中下载，并将下载好的压缩包保存到和安装脚本相同目录下。  
+3. 下载安装文件       
+复制前面打印出来的链接，直接到浏览器中下载，并将下载好的压缩包保存到和安装脚本相同目录下。    
 ```bash
 zcli@fedora:~$ ls -lh | grep ollama
--rwxrwxrwx. 1 zcli zcli  13K  5月18日 21:11 ollama_install.sh
--rw-r--r--. 1 zcli zcli 1.6G  5月18日 21:04 ollama-linux-amd64.tgz
+-rwxrwxrwx. 1 zcli zcli  13K  5月18日 21:11 ollama_install.sh      # 安装脚本
+-rw-r--r--. 1 zcli zcli 1.6G  5月18日 21:04 ollama-linux-amd64.tgz # 安装文件
 ```
-4. 修改安装脚本   
+4. 修改安装脚本     
 定位到第二步中给出的代码：   
 ```bash
 status "Downloading Linux ${ARCH} bundle"
@@ -110,12 +110,12 @@ curl --fail --show-error --location --progress-bar \
 ```
 修改为：    
 ```bash
+# 也就是不curl了，直接将已经下载会的安装文件解压到指定目录。
 status "Downloading Linux ${ARCH} bundle"
-$SUDO tar -xzf ollama-linux-amd64.tgz -C "$OLLAMA_INSTALL_DIR"
+$SUDO tar -xzf ollama-linux-amd64.tgz -C "$OLLAMA_INSTALL_DIR" # 解压到指定目录
 ```
-也就是不curl了，直接解压到指定目录。
 
-5. 执行安装脚本
+5. 执行安装脚本     
 ```bash
 zcli@fedora:~$ ./ollama_install.sh 
 >>> Cleaning up old version at /usr/local/lib/ollama
@@ -131,7 +131,7 @@ zcli@fedora:~$ ./ollama_install.sh
 Created symlink '/etc/systemd/system/default.target.wants/ollama.service' → '/etc/systemd/system/ollama.service'.
 >>> NVIDIA GPU installed.
 ```
-OK安装好了，但是注意了，在linux上，这个ollama是一个linux服务，安装后就运行起来了，如下：   
+OK，安装好了，但是注意了，在Linux上，这个ollama安装为一个Linux服务，安装后就自动运行起来了，如下：   
 ```bash
 zcli@fedora:~$ sudo systemctl status ollama.service 
 ● ollama.service - Ollama Service
@@ -148,9 +148,9 @@ zcli@fedora:~$ sudo systemctl status ollama.service
              └─43831 /usr/local/bin/ollama serve
 ```
 # 8. AI 模型部署
-因为Ollama服务已经启动了，所以就不必再次运行`ollama serve`命令了。直接开run(如果还没有下载就会先下载，等待即可)：  
+因为Ollama服务已经启动了，所以就不必再次运行`ollama serve`命令了。直接开run：    
 ```bash
-zcli@fedora:~$ ollama run qwen3:14b
+zcli@fedora:~$ ollama run qwen3:14b  # 如果模型还没有下载就会先下载模型，等待即可
 pulling manifest 
 pulling a8cc1361f314: 100% ▕██████████████████████████████████████████████████████████████████████████████████████████████▏ 9.3 GB                         
 pulling eb4402837c78: 100% ▕██████████████████████████████████████████████████████████████████████████████████████████████▏ 1.5 KB                         
@@ -177,8 +177,8 @@ success
 ```
 此时的显存占用：`11490MiB /  16311MiB`，啊，这个，嗯..，刚刚好。
 
-`提示：`  
-`ollama run qwen3:14b`会从Ollama服务拉取模型，国内网络可能不太行，可以使用`ollama run modelscope.cn/models/Qwen/Qwen3-14B`。
+`提示：`    
+`ollama run qwen3:14b`会从Ollama服务器拉取模型，国内网络可能不太行，可以使用`ollama run modelscope.cn/models/Qwen/Qwen3-14B`。
 
 `--verbose参数： 显示推理过程的耗时情况`   
 ```bash
@@ -205,16 +205,16 @@ eval duration:        33.587006893s      # 生成输出的总耗时，占总耗�
 eval rate:            38.05 tokens/s     # 生成输出的速度（token/s），生成速度较慢（38 tokens/s），这与 14B 参数量的 Dense 模型特性一致，
                                          # Qwen3 的 MoE 模型（如 Qwen3-30B-A3B）通过激活部分参数（30B 总参数，仅激活 3B）实现更高的生成速度。
 ```
-模型文件位于目录：`/usr/share/ollama`下。  
+模型文件位于目录：`/usr/share/ollama`下。    
 
 # 9. 前端接入
-Ollama默认是在11434端口提供服务。明白了这个就可以到`www.cherry-ai.com`下载Cherry Studio了。  
-安装好后，选择『设置』，然后在『设置』中选择『Ollama』：   
-![](CherryStudio.png)   
+Ollama默认是在11434端口提供服务。明白了这个就可以到`www.cherry-ai.com`下载Cherry Studio了。    
+安装好后，选择『设置』，然后在『设置』中选择『Ollama』：     
+![](CherryStudio.png)     
 点击『添加』，然后填写“模型ID”，“模型名称”，“分组名称”，这些信息通过`ollama list`命令获取，注意了，这里的“模型ID”是`ollama list`命令输出的“NAME”，而不是ID,然后点击右上角的“检测”，提示“连接成功”就OK了，至于API密钥，随便填个什么就行，最后将默认助手的模型设置为我们刚刚添加的模型就可以使用了。  
 
 # 10. 效果展示
-以上文提到的西红柿问题为例，我们让qwen3-14b自己评价自己性能表现：  
+以上文提到的西红柿问题为例，我们让qwen3-14b自己评价自己性能表现：     
 ![](推理结果.png)
 
 
