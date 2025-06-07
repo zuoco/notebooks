@@ -2,9 +2,6 @@
 title: "第二节 Pve节点部署"
 description: 
 date: 2025-05-27T22:46:37+08:00
-image: 
-math: 
-license: 
 hidden: false
 comments: true
 draft: false
