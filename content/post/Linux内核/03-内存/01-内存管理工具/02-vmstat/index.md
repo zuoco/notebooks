@@ -1,9 +1,7 @@
 ---
-title: "vmstat"
+title: "第2节 - vmstat命令"
 description: 
 date: 2025-05-21T22:01:50+08:00
-math: 
-license: 
 hidden: false
 comments: true
 draft: false
@@ -11,17 +9,16 @@ categories:
   - Linux内核
 ---
 
-
-# 安装vmstat
+# 1. 安装vmstat
 ```bash
 sudo dnf install sysstat  # Fedora
 ```
-# 启用sysstat服务
+# 2. 启用sysstat服务
 ```bash
 sudo systemctl start sysstat
 sudo systemctl enable sysstat
 ```
-# 查看内存信息
+# 3. 查看内存信息
 ```bash
 sar -r 1 10
 ```
@@ -59,9 +56,9 @@ Linux 6.14.6-200.fc41.x86_64 (fedora) 	2025年05月21日 	_x86_64_	(16 CPU)
 需写回磁盘的修改过的内存页，数值低说明I/O压力小。   
 
 
-# 提交内存
+# 4. 提交内存
 
 
-# 脏页
+# 5. 脏页
 
 
