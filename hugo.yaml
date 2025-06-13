@@ -1,6 +1,6 @@
 baseurl: https://zuoco.github.io/
 languageCode: zh-CN
-theme: hugo-theme-stack
+theme: stack
 title: Example Site # 不知道那里用到了
 copyright: 阿左阿右 # 页面下方的版权信息
 
@@ -39,6 +39,7 @@ permalinks:
 params:
     mainSections:
         - post
+        - 代码设计学习
     featuredImageField: image
     rssFullContent: true
     favicon: /mylogo.png # 浏览器标签页的图标
