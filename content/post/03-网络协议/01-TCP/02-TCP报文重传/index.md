@@ -1,6 +1,6 @@
 ---
-title: "TCP超时重传"
-description: 
+title: "TCP报文重传"
+description: "TCP可靠性之“报文重传"
 date: 2025-06-16T15:21:50+08:00
 image: 
 math: 

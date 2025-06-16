@@ -5,7 +5,7 @@ date: 2025-05-06T20:36:33+08:00
 comments: true
 draft: false
 categories:
-  - 软件设计
+  - 代码设计
 ---
 
 # 1. 项目构建系统

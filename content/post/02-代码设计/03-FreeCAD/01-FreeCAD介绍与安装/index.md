@@ -8,7 +8,7 @@ hidden: false
 comments: true
 draft: false
 categories:
-  - 软件设计
+  - 代码设计
 ---
 
 # FreeCAD - 1.0.1

@@ -5,5 +5,5 @@ menu:
     identifier: "open3d"
     parent: "open-source"
     name: "Open3D"
-    weight: 3
+    weight: 4
 ---

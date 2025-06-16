@@ -5,5 +5,5 @@ menu:
     identifier: "freecad"
     parent: "open-source"
     name: "FreeCAD"
-    weight: 2
+    weight: 3
 ---
