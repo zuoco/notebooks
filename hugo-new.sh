@@ -1,6 +1,6 @@
 path=$(pwd)
-echo $path
+echo "path: $path"
 result=$(echo "$path" | sed -E 's!.*/(post/.*)!\1!')
-echo $result
-cd "/home/zcli/notebooks"
+echo "cmd: hugo new $result/index.md"
+cd "/home/zci/notebooks"
 hugo new  "$result/index.md" 
