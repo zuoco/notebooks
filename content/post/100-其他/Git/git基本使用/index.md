@@ -1,7 +1,7 @@
 ---
 title: "Git基本使用"
 description:
-date: 2025-05-07T21:48:29+08:00
+date: 2023-06-03
 math: 
 license: 
 hidden: false
@@ -26,6 +26,8 @@ categories:
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "your_email@example.com"
+```
+
 仓库配置：   
 ```bash
 # 在仓库目录下执行以下命令：
@@ -65,10 +67,17 @@ commit还有其他用法：
 # 使用一次新的提交，替代上一次提交，会修改commit id
 git commit --amend -m "修改提交信息"
 ```
+
+
+
 ```bash
 # 提交指定文件
 git commit filename
 ```
+
+
+
+
 # 7. 提交日志
 ```bash
 git log

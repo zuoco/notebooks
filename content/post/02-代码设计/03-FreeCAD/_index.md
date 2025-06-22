@@ -1,5 +1,5 @@
 ---
-title: "FreeCAD"
+title: "【FreeCAD】"
 menu:
   main:
     identifier: "freecad"

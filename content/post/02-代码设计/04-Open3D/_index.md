@@ -1,5 +1,5 @@
 ---
-title: "Open3D"
+title: "【Open3D】"
 menu:
   main:
     identifier: "open3d"

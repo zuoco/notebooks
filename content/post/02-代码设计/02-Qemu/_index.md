@@ -1,5 +1,5 @@
 ---
-title: "Qemu"
+title: "【Qemu】"
 menu:
   main:
     identifier: "qemu"
