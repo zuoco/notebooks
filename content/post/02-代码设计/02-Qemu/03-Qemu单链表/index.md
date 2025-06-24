@@ -1,5 +1,5 @@
 ---
-title: "Qemu单向链表"
+title: "Qemu - Singly-linked List 单链表"
 description: 
 date: 2024-10-21
 image: 
@@ -27,8 +27,6 @@ categories:
   - [3.3. 移除节点](#33-移除节点)
     - [3.3.1. 移除首元节点](#331-移除首元节点)
     - [3.3.2. 移除指定节点](#332-移除指定节点)
-
-
 
 
 # 1. 单向链表

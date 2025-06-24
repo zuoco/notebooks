@@ -1,5 +1,5 @@
 ---
-title: "Qemu简单队列"
+title: "Qemu简单队列 Simple Queue"
 description: 
 date: 2024-11-03
 image: 
