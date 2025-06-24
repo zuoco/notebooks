@@ -9,6 +9,7 @@ hidden: false
 comments: true
 draft: false
 categories:
+  - Qemu
   - 数据结构
 ---
 
