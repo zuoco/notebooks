@@ -16,18 +16,23 @@ categories:
 - [1. 队列定义](#1-队列定义)
   - [1.1. 使用案例](#11-使用案例)
 - [2. 队列操做](#2-队列操做)
-  - [2.1. 队列初始化](#21-队列初始化)
-  - [2.2. 插入节点](#22-插入节点)
-    - [2.2.1. 插入到头部](#221-插入到头部)
-    - [2.2.2. 插入到尾部](#222-插入到尾部)
-    - [2.2.3. 插入到中间](#223-插入到中间)
+  - [2.1. 基本访问方法](#21-基本访问方法)
+  - [2.2. 队列初始化](#22-队列初始化)
+  - [2.3. 插入节点](#23-插入节点)
+    - [2.3.1. 插入到头部](#231-插入到头部)
+    - [2.3.2. 插入到尾部](#232-插入到尾部)
+    - [2.3.3. 插入到中间](#233-插入到中间)
 - [3. 移除节点](#3-移除节点)
   - [3.1. 移除头部节点](#31-移除头部节点)
   - [3.2. 移除指定节点](#32-移除指定节点)
   - [3.3. 遍历](#33-遍历)
     - [3.3.1. 遍历队列](#331-遍历队列)
     - [3.3.2. 遍历队列（安全）](#332-遍历队列安全)
-    - [3.3.3. 遍历宏使用方法](#333-遍历宏使用方法)
+  - [3.4. 尾节点快速定位](#34-尾节点快速定位)
+  - [3.5. 队列合并](#35-队列合并)
+    - [3.5.1. 合并到尾部](#351-合并到尾部)
+    - [3.5.2. 合并到头部](#352-合并到头部)
+  - [3.6. 分割队列](#36-分割队列)
 - [4. 完整代码](#4-完整代码)
 
 
@@ -53,7 +58,7 @@ struct {                                                                \
 ```
 
 ## 1.1. 使用案例
-&emsp;&emsp;下面的函数来源于qemu-8.2.2/qemu-img.c，该文件中实现了QEMU磁盘映像工具qemu-img的核心源代码，其中img_bitmap()函数用于磁盘持久化位图操作。QSIMPLEQ队列的基本操作在该函数中都有使用。  
+&emsp;&emsp;qemu-8.2.2/qemu-img.c     
 ```c
 // 节点类型
 typedef struct ImgBitmapAction {
@@ -62,18 +67,22 @@ typedef struct ImgBitmapAction {
     QSIMPLEQ_ENTRY(ImgBitmapAction) next;
 } ImgBitmapAction;
 
-
+// 磁盘持久化位图操作。  
 static int img_bitmap(int argc, char **argv)
 {
     // ......
     // 省略一堆代码
     // ......
-    QSIMPLEQ_HEAD(, ImgBitmapAction) actions;  // 队列头
+    
+    
+    // 队列头
+    QSIMPLEQ_HEAD(, ImgBitmapAction) actions;
     ImgBitmapAction *act, *act_next;
     const char *op;
     int inactivate_ret;
 
-    QSIMPLEQ_INIT(&actions);  //初始化队列
+    // 初始化队列
+    QSIMPLEQ_INIT(&actions);  
 
     for (;;) {
 
@@ -86,7 +95,9 @@ static int img_bitmap(int argc, char **argv)
         case OPTION_ADD:
             act = g_new0(ImgBitmapAction, 1);
             act->act = BITMAP_ADD;
-            QSIMPLEQ_INSERT_TAIL(&actions, act, next);  // 添加节点
+            
+            // 添加节点
+            QSIMPLEQ_INSERT_TAIL(&actions, act, next);  
             add = true;
             break;
   
@@ -104,7 +115,9 @@ static int img_bitmap(int argc, char **argv)
     
     // ......
 
-    QSIMPLEQ_FOREACH_SAFE(act, &actions, next, act_next) {   // 遍历队列
+
+    // 遍历队列
+    QSIMPLEQ_FOREACH_SAFE(act, &actions, next, act_next) {   
         switch (act->act) {
         // ......
         }
@@ -116,16 +129,32 @@ static int img_bitmap(int argc, char **argv)
     }
 
     // ......
-
  out:
-    // ......
     // ......
     return ret;
 }
 ```
 
 # 2. 队列操做
-## 2.1. 队列初始化
+
+## 2.1. 基本访问方法
+```c
+// 常规判空：  单线程环境、受锁保护的多线程临界区、性能敏感但线程安全已保障的场景。
+#define QSIMPLEQ_EMPTY(head)        ((head)->sqh_first == NULL)
+
+
+// 原子判空：  无锁编程（Lock-free）场景，多线程环境无显式锁保护时，需检测队列状态变化的异步场景。
+#define QSIMPLEQ_EMPTY_ATOMIC(head) \
+    (qatomic_read(&((head)->sqh_first)) == NULL)
+
+// 获取队列的首节点。
+#define QSIMPLEQ_FIRST(head)        ((head)->sqh_first)
+
+// 获取elm的下一个节点
+#define QSIMPLEQ_NEXT(elm, field)   ((elm)->field.sqe_next)
+```
+
+## 2.2. 队列初始化
 ```c
 #define QSIMPLEQ_INIT(head) do {                                        \
     (head)->sqh_first = NULL;                                           \
@@ -134,9 +163,9 @@ static int img_bitmap(int argc, char **argv)
 ```
 ![](空队列.svg)  
 
-## 2.2. 插入节点
+## 2.3. 插入节点
 
-### 2.2.1. 插入到头部
+### 2.3.1. 插入到头部
 ```c
 #define QSIMPLEQ_INSERT_HEAD(head, elm, field) do {                     \
     if (((elm)->field.sqe_next = (head)->sqh_first) == NULL)            \
@@ -155,7 +184,7 @@ static int img_bitmap(int argc, char **argv)
 ![](非空队列插入节点.svg)  
 
 
-### 2.2.2. 插入到尾部
+### 2.3.2. 插入到尾部
 ```c
 #define QSIMPLEQ_INSERT_TAIL(head, elm, field) do {                     \
     (elm)->field.sqe_next = NULL;                                       \
@@ -165,7 +194,7 @@ static int img_bitmap(int argc, char **argv)
 ```
 ![](插入到尾部.svg)
 
-### 2.2.3. 插入到中间
+### 2.3.3. 插入到中间
 ```c
 #define QSIMPLEQ_INSERT_AFTER(head, listelm, elm, field) do {           \
     if (((elm)->field.sqe_next = (listelm)->field.sqe_next) == NULL)    \
@@ -199,7 +228,6 @@ static int img_bitmap(int argc, char **argv)
 
 2. 队列中只有一个节点：      
 ![](移除头部节点02.svg)   
-
 
 
 ## 3.2. 移除指定节点    
@@ -238,6 +266,19 @@ static int img_bitmap(int argc, char **argv)
         (var);                                                          \
         (var) = ((var)->field.sqe_next))
 ```
+使用案例：  
+```c
+// qemu-8.2.2/audio/audio.c。   
+// 遍历全局音频设备链表，逐个初始化每个音频设备。     
+void audio_init_audiodevs(void)
+{
+    AudiodevListEntry *e;
+
+    QSIMPLEQ_FOREACH(e, &audiodevs, next) {
+        audio_init(e->dev, &error_fatal);
+    }
+}
+```
 
 ### 3.3.2. 遍历队列（安全）
 遍历队列时可以安全删除节点。   
@@ -247,28 +288,96 @@ static int img_bitmap(int argc, char **argv)
         (var) && ((next = ((var)->field.sqe_next)), 1);                 \
         (var) = (next))
 ```
+使用案例：   
+```c
+// qemu-8.2.2/migration/ram.c   
+// 在虚拟机迁移结束或发生错误时调用，清理未处理完的页面请求队列，防止资源泄露。
+// 释放 RAMState 结构体中的 src_page_requests 队列中所有剩余的页面请求。
+static void migration_page_queue_free(RAMState *rs)
+{
+    struct RAMSrcPageRequest *mspr, *next_mspr;
+    /* This queue generally should be empty - but in the case of a failed
+     * migration might have some droppings in.
+     */
+    RCU_READ_LOCK_GUARD();
+    // 遍历队列
+    QSIMPLEQ_FOREACH_SAFE(mspr, &rs->src_page_requests, next_req, next_mspr) {
+        memory_region_unref(mspr->rb->mr);
+        // 删除节点
+        QSIMPLEQ_REMOVE_HEAD(&rs->src_page_requests, next_req);
+        g_free(mspr);
+    }
+}
+```
 
-### 3.3.3. 遍历宏使用方法
+## 3.4. 尾节点快速定位
+```c
+#define QSIMPLEQ_LAST(head, type, field)                                \
+    (QSIMPLEQ_EMPTY((head)) ?                                           \
+        NULL :                                                          \
+            ((struct type *)(void *)                                    \
+        ((char *)((head)->sqh_last) - offsetof(struct type, field))))
+```
+- 如果队列为空，则返回NULL。如果队列不为空，则返回队尾节点。
+- ofensetof()，获取结构体成员相对于结构体的偏移量。   
+- `offsetof(struct type, field)`，获取field在type中的偏移量。    
+- `(char *)((head)->sqh_last)`，转换为 char* 类型以便进行字节级的指针运算。   
+- `(char *)((head)->sqh_last) - offsetof(struct type, field)`，从尾元素的 next 指针地址回退到包含它的结构体起始地址。   
+- `(struct type *)(void *)`，双重类型转换，先将计算出的地址转为 void*（通用指针类型），再转为目标类型 struct type *（具体结构体指针）。   
 
 
 
+## 3.5. 队列合并 
+
+### 3.5.1. 合并到尾部
+```C
+#define QSIMPLEQ_CONCAT(head1, head2) do {                              \
+    if (!QSIMPLEQ_EMPTY((head2))) {                                     \
+        *(head1)->sqh_last = (head2)->sqh_first;                        \
+        (head1)->sqh_last = (head2)->sqh_last;                          \
+        QSIMPLEQ_INIT((head2));                                         \
+    }                                                                   \
+} while (/*CONSTCOND*/0)
+```
+- 将 head2 队列的所有元素插入到 head1 队列的尾部。   
+- 只有当 head2 队列非空时才执行操作，空队列合并是无效操作，直接跳过。 
+![](队列合并-尾部.svg)    
 
 
+### 3.5.2. 合并到头部
+```c
+#define QSIMPLEQ_PREPEND(head1, head2) do {                             \
+    if (!QSIMPLEQ_EMPTY((head2))) {                                     \
+        *(head2)->sqh_last = (head1)->sqh_first;                        \
+        (head1)->sqh_first = (head2)->sqh_first;                          \
+        QSIMPLEQ_INIT((head2));                                         \
+    }                                                                   \
+} while (/*CONSTCOND*/0)
+```
+- 将 head2 队列的所有元素插入到 head1 队列的头部。   
+- 只有当 head2 队列非空时才执行操作，空队列合并是无效操作，直接跳过。   
+![](队列合并-头部.svg)    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+## 3.6. 分割队列
+将原队列从指定节点之后分割为两个独立队列。
+```c
+#define QSIMPLEQ_SPLIT_AFTER(head, elm, field, removed) do {            \
+    QSIMPLEQ_INIT(removed);                                             \
+    if (((removed)->sqh_first = (head)->sqh_first) != NULL) {           \
+        if (((head)->sqh_first = (elm)->field.sqe_next) == NULL) {      \
+            (head)->sqh_last = &(head)->sqh_first;                      \
+        }                                                               \
+        (removed)->sqh_last = &(elm)->field.sqe_next;                   \
+        (elm)->field.sqe_next = NULL;                                   \
+    }                                                                   \
+} while (/*CONSTCOND*/0)
+```
+- head: &emsp;队列头，为空时直接返回。   
+- elm: &emsp;从elm开始分割队列，将eml（包括）之前的节点划分给removed。
+- removed: &emsp;指向移除的队列。   
+- 以elm为非末尾节为例：    
+![](队列分割.svg)   
 
 
 # 4. 完整代码
