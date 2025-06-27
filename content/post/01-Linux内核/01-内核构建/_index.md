@@ -1,5 +1,5 @@
 ---
-title: "内核构建与内核模块"
+title: "《内核与内核模块构建》"
 menu:
   main:
     identifier: "linux-kernel"
