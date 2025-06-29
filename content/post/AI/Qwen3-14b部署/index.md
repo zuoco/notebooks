@@ -1,7 +1,7 @@
 ---
 title: "使用Ollama本地部署Qwen3-14b"
 description: "Qwen3-14B本地部署"
-date: 2025-05-18T23:17:13+08:00
+date: 2025-05-15
 math: 
 license: 
 hidden: false

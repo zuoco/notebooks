@@ -4,7 +4,7 @@ description: "本文介绍C++的输入输出。"
 date: 2020-09-09
 draft: false
 categories:
-    现代C++
+    C++
 ---
 
 # 1. 非格式化IO

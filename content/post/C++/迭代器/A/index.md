@@ -1,7 +1,7 @@
 ---
 title: "迭代器"
 description: 
-date: 2023-07-12
+date: 2023-07-23
 image: 
 math: 
 license: 
@@ -21,9 +21,17 @@ categories:
   - [2.5. 随机访问迭代器 RandomIt](#25-随机访问迭代器-randomit)
 - [3. 特殊迭代器](#3-特殊迭代器)
   - [3.1. 插入迭代器](#31-插入迭代器)
-    - [3.1.1. back\_insert\_iterator类模板](#311-back_insert_iterator类模板)
-    - [3.1.2. insert\_iterator](#312-insert_iterator)
-
+    - [3.1.1. back\_insert\_iterator](#311-back_insert_iterator)
+    - [3.1.2. front\_insert\_iterator](#312-front_insert_iterator)
+    - [3.1.3. insert\_iterator](#313-insert_iterator)
+    - [3.1.4. 为什么要引入插入“迭代器”](#314-为什么要引入插入迭代器)
+  - [3.2. 流迭代器](#32-流迭代器)
+    - [3.2.1. istream\_iterator](#321-istream_iterator)
+    - [3.2.2. ostream\_iterator](#322-ostream_iterator)
+    - [3.2.3. 流迭代器的开始与结束位置](#323-流迭代器的开始与结束位置)
+  - [3.3. 反向迭代器](#33-反向迭代器)
+  - [3.4. 移动迭代器](#34-移动迭代器)
+- [4. 迭代器哨兵的概念](#4-迭代器哨兵的概念)
 
 
 # 1. 迭代器分类
@@ -148,7 +156,7 @@ void sort( RandomIt first, RandomIt last );
 ## 3.1. 插入迭代器
 insert_iterator、back_insert_iterator、front_insert_iterator是标准库提供的3个类模板。
 
-### 3.1.1. back_insert_iterator类模板
+### 3.1.1. back_insert_iterator
 ```cpp
 template< class Container >
 class back_insert_iterator;
@@ -175,12 +183,281 @@ int main()
     std::cout << '\n';
 }
 ```
-&emsp;&emsp;一个容器要想使用insert_iterator迭代器， 就必须支持push_back()方法。   
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
-### 3.1.2. insert_iterator
+int main()
+{
+    std::vector<int> v;
+    std::fill_n(std::back_inserter_iterator(v), 10, 3);
+    for (auto& elem : v) std::cout << elem << ' ';
+}
+// 输出： 
+```
+&emsp;&emsp;std::back_inserter_iterator也可以使用std::back_inserter替换，其实现逻辑如下：  
+```cpp
+template<class Container>
+std::back_insert_iterator<Container> back_inserter(Container& c)
+{
+    return std::back_insert_iterator<Container>(c); // 返回一个back_insert_iterator迭代器
+}
+```
+  
+### 3.1.2. front_insert_iterator
+&emsp;&emsp; 和back_insert_iterator类似， 容器必须支持push_front操作。当然C++也提供了std::front_insert操作来简化使用。   
+
+
+### 3.1.3. insert_iterator
+&emsp;&emsp; 更加一般化的插入迭代器。   
 ```cpp
 template< class Container >
 class insert_iterator;
 ```
+&emsp;&emsp; 构造函数：   
+```cpp
+constexpr insert_iterator( Container& c, ranges::iterator_t<Container> i );
+```
+&emsp;&emsp; 这个insert_iterator在构造的时候需要一个容器和容器的迭代器，每一次使用“=”操作，实际上是调用容器的insert方法，每次插入操作都会调用容器的 insert 方法，在 i 所指向的位置插入元素（插入到i前面）。      
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <vector>
+ 
+int main()
+{
+    std::vector<int> v{1, 2, 3, 4, 5};
+    std::list<int> l{-1, -2, -3};
+    std::copy(v.begin(), v.end(), // may be simplified with std::inserter
+              std::insert_iterator<std::list<int>>(l, std::next(l.begin()))); 
+    for (int n : l)
+        std::cout << n << ' ';
+    std::cout << '\n';
+}
+```
+&emsp;&emsp;这个insert_iterator也是有简化操作的： 
+```cpp
+// 返回一个insert_iterator迭代器。
+template< class Container >
+constexpr std::insert_iterator<Container>
+    inserter( Container& c, ranges::iterator_t<Container> i );
+```
+
+### 3.1.4. 为什么要引入插入“迭代器”  
+&emsp;&emsp;对容器进行写操作，我们必须保证目标容器有足够大的空间，如果不能够确保，那么就可以使用插入迭代器，通过push_back/push_front操作将元素插入到容器中，即使容器空间不够，也可以完成写操作。很显然，一个容器要想使用插入迭代器， 就必须支持push_back()/push_front方法。 
 
 
+## 3.2. 流迭代器
+
+### 3.2.1. istream_iterator
+```cpp
+template< class T,
+          class CharT = char,
+          class Traits = std::char_traits<CharT>,
+          class Distance = std::ptrdiff_t >
+class istream_iterator;
+```
+构造函数：  
+```cpp
+constexpr istream_iterator();
+istream_iterator( istream_type& stream );  
+istream_iterator( const istream_iterator& other ) = default;
+```
+
+&emsp;&emsp;除了参数T，其他带都有默认值。使用案例如下：  
+```cpp  
+#include <iostream>
+#include <iterator>
+#include <sstream>
+
+int main()
+{
+    std::istringstream iss("1 2 3 4 5");
+    std::istream_iterator<int> is(iss);   //使用构造函数istream_iterator( istream_type& stream ); 
+    std::cout << *is << std::endl;
+    ++is;
+    std::cout << *is << std::endl;
+    // 输出：
+    // 1 
+    // 2
+}
+```
+
+### 3.2.2. ostream_iterator
+
+```cpp
+template< class T,
+          class CharT = char,
+          class Traits = std::char_traits<CharT> >
+class ostream_iterator;
+```
+
+&emsp;&emsp;构造函数：   
+```cpp
+ostream_iterator( ostream_type& stream, const CharT* delim ); // delim 间隔符  	
+ostream_iterator( ostream_type& stream );                     // 
+```
+
+&emsp;&emsp;使用示例：  
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <numeric>
+ 
+int main()
+{
+    std::ostream_iterator<char> oo{std::cout};        // 关联到 std::cout
+    std::ostream_iterator<int> i1{std::cout, ", "};
+    std::fill_n(i1, 5, -1);                           // -1, -1, -1, -1, -1,
+    *oo++ = '\n';
+ 
+    std::ostream_iterator<double> i2{std::cout, "; "};
+    *i2++ = 3.14;
+    *i2++ = 2.71;
+    *oo++ = '\n';
+
+    // 输出：
+    // -1, -1, -1, -1, -1,
+    // 3.14; 2.71;
+}
+```
+
+### 3.2.3. 流迭代器的开始与结束位置
+```cpp
+
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <sstream>
+ 
+int main()
+{
+    std::istringstream stream("1 2 3 4 5");
+    std::copy(
+        std::istream_iterator<int>(stream),
+        std::istream_iterator<int>(),
+        std::ostream_iterator<int>(std::cout, " ")
+    );
+}
+```
+
+```cpp
+#include <iostream>
+#include <iterator>
+#include <sstream>
+
+int main()
+{
+    std::istringstream iss("1 2 3 4 5");
+    std::istream_iterator<int> x(iss);  // 相当于开始位置
+    std::istream_iterator<int> y{};     // 相当于结束位置    
+    std::cout << *is << std::endl;
+    for (; x != y; ++x)
+    {
+        std::cout << *x << std::endl;
+    }
+}
+```
+
+```cpp
+#include <iostream>
+#include <iterator>
+#include <sstream>
+
+int main()
+{
+    std::istringstream iss("1 2 3 4 5");
+    std::istream_iterator<int> x(iss);  
+    std::istream_iterator<int> y{};     
+    int res=std::accumulate(x, y, 0);   
+    std::cout << res << std::endl;   
+}
+```
+
+## 3.3. 反向迭代器
+&emsp;&emsp;就是rbegin和rend。   
+![](迭代器.svg)  
+&emsp;&emsp;从图中可以看到，迭代器区间是一个左闭右开区间，所以尾迭代器指向的是最后一个元素的下一个位置。   
+
+
+## 3.4. 移动迭代器
+```cpp
+template< class Iter >
+class move_iterator;
+```
+&emsp;&emsp;使用案例：   
+```cpp
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <iterator>
+#include <ranges>
+#include <string>
+#include <string_view>
+#include <vector>
+ 
+void print(const std::string_view rem, const auto& v)
+{
+    std::cout << rem;
+    for (const auto& s : v)
+        std::cout << std::quoted(s) << ' ';
+    std::cout << '\n';
+};
+ 
+int main()
+{
+    std::vector<std::string> v{"this", "_", "is", "_", "an", "_", "example"};
+    print("Old contents of the vector: ", v);
+
+    std::string concat;
+    for (auto begin = std::make_move_iterator(v.begin()),
+              end = std::make_move_iterator(v.end());
+         begin != end; ++begin)
+    {
+        std::string temp{*begin}; // moves the contents of *begin to temp
+        concat += temp;
+    }
+ 
+    // Starting from C++17, which introduced class template argument deduction,
+    // the constructor of std::move_iterator can be used directly:
+    // std::string concat = std::accumulate(std::move_iterator(v.begin()),
+    //                                      std::move_iterator(v.end()),
+    //                                      std::string());
+ 
+    print("New contents of the vector: ", v);
+    print("Concatenated as string: ", std::ranges::single_view(concat));
+}
+```
+&emsp;&emsp;输出：  
+```bash
+Old contents of the vector: "this" "_" "is" "_" "an" "_" "example"
+New contents of the vector: "" "" "" "" "" "" ""
+Concatenated as string: "this_is_an_example"
+```
+&emsp;&emsp;移动迭代器的主要作用是移动迭代器所迭代的元素，也就是说我们通过移动迭代器读取元素后，该元素的值就会被移动走了(std::move)，再次访问就是空的，请看如下代码：   
+```cpp
+int main()
+{
+    std::string str = "this is an example";
+    auto y = std::move(str);
+    std::cout << x << std::endl;  // x置为空
+    std::cout << y << std::endl;  // y正常输出: this is an example
+}
+```
+
+
+#  4. 迭代器哨兵的概念
+&emsp;&emsp;对于一个迭代器区间: first,last，first不断++，直到first == last，我们就认为到达迭代器结尾了，那么last就是一个哨兵，first和哨兵不一定是一个类型，但是一定能够进行“==”运算。     
+
+
+
+
+
+
+
+
+ 

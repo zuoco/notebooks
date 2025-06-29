@@ -7,7 +7,7 @@ license:
 comments: true
 draft: false
 categories:
-    现代C++
+    C++
 ---
 
 # 1. operator<=>

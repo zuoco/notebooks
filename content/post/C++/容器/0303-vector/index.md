@@ -5,7 +5,7 @@ date: 2021-09-05
 comments: true
 draft: false
 categories:
-    现代C++
+    C++
 ---
 
 # 1. vector

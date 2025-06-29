@@ -9,7 +9,7 @@ hidden: false
 comments: true
 draft: false
 categories:
-    - 现代C++
+    - C++
     - 包管理器
 ---
 

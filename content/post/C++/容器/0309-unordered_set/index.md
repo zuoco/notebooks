@@ -9,5 +9,5 @@ hidden: false
 comments: true
 draft: false
 categories:
-    现代C++
+    C++
 ---
