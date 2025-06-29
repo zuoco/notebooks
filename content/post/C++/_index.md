@@ -4,7 +4,7 @@ menu:
   main:
       identifier: "cpp"
       name: "C++"
-      weight: 50
+      weight: 60
       params:
           icon: cpp
 ---

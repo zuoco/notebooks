@@ -4,7 +4,7 @@ menu:
   main:
       identifier: "others"
       name: "其他"
-      weight: 100
+      weight: 999
       params:
           icon: other
 ---

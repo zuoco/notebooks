@@ -4,7 +4,7 @@ menu:
   main:
       identifier: "ai"
       name: "AI"
-      weight: 40
+      weight: 50
       params:
           icon: ai
 ---

@@ -1,5 +1,5 @@
 ---
-title: "《容器》"
+title: "【容器】"
 menu:
   main:
     identifier: "cpp-container"

@@ -1,10 +1,10 @@
 ---
-title: "虚拟化"
+title: "【虚拟化与云】"
 menu:
   main:
       identifier: "virtualization"
-      name: "虚拟化"
-      weight: 60
+      name: "虚拟化与云"
+      weight: 100
       params:
           icon: cloud
 ---

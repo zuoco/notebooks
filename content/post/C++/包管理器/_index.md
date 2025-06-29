@@ -1,5 +1,5 @@
 ---
-title: "《包管理器》"
+title: "【包管理器】"
 menu:
   main:
     identifier: "vcpkg"

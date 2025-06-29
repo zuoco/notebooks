@@ -1,5 +1,5 @@
 ---
-title: "《C++泛型算法》"  
+title: "【C++泛型算法】"  
 menu:
   main:
     identifier: "cpp-generic-algorithm"

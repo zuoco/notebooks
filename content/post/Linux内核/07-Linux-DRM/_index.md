@@ -1,5 +1,5 @@
 ---
-title: "《Linux直接渲染管理-DRM》"
+title: "【Linux直接渲染管理-DRM】"
 menu:
   main:
     identifier: "linux-drm"
