@@ -1,7 +1,7 @@
 ---
 title: "第2节 - Network Manager"
 description: 
-date: 2025-06-07T23:18:57+08:00
+date: 2024-06-11
 hidden: false
 comments: true
 draft: false

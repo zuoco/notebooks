@@ -1,7 +1,7 @@
 ---
 title: "第2节 - Linux Bond 网卡绑定"
 description: 
-date: 2025-06-07T18:55:39+08:00
+date: 2024-10-09
 image: 
 math: 
 license: 
