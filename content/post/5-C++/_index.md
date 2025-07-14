@@ -1,5 +1,5 @@
 ---
-title: "【C++】"
+title: "《 C++ 》"
 menu:
   main:
       identifier: "cpp"
