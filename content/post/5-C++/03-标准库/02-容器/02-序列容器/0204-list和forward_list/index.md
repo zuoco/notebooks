@@ -1,7 +1,7 @@
 ---
 title: "序列容器之 list 和 forward_list"
 description: 
-date: 2025-07-12
+date: 2023-04-18
 image: 
 math: 
 license: 
@@ -11,7 +11,6 @@ draft: false
 categories:
     - "C++"
     - "C++ STL"
-    - "STL 容器"
 ---
 
 

@@ -1,7 +1,7 @@
 ---
 title: "有序关联容器之 multimap和multiset"
 description: 
-date: 2025-07-12
+date: 2023-04-24
 image: 
 math: 
 license: 
@@ -11,7 +11,6 @@ draft: false
 categories:
     - "C++"
     - "C++ STL"
-    - "STL 容器"
 ---
 
 - [1. map和multimap的区别](#1-map和multimap的区别)

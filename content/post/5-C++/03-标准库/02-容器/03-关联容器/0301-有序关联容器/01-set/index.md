@@ -8,7 +8,6 @@ draft: false
 categories:
     - "C++"
     - "C++ STL"
-    - "STL 容器"
 ---
 
 - [1. 初步认识](#1-初步认识)

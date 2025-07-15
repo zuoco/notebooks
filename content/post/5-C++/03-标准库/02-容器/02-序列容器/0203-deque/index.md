@@ -1,7 +1,7 @@
 ---
 title: "顺序容器之 —— deque"
 description: 
-date: 2025-07-12
+date: 2023-04-17
 image: 
 math: 
 license: 
@@ -11,7 +11,6 @@ draft: false
 categories:
     - "C++"
     - "C++ STL"
-    - "STL 容器"
 ---
 
 

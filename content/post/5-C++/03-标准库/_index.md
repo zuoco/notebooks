@@ -1,5 +1,5 @@
 ---
-title: "《 标准库 —— STL 》"
+title: "《 标准库 STL 》"
 menu:
   main:
     identifier: "cpp-stl"

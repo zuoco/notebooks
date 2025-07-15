@@ -7,7 +7,6 @@ draft: false
 categories:
     - "C++"
     - "C++ STL"
-    - "STL 容器"
 ---
 
 - [1. vector](#1-vector)

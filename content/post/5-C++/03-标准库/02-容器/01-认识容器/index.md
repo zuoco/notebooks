@@ -1,5 +1,5 @@
 ---
-title: "STL 容器 —— 总结"
+title: "STL容器 — 总结"
 description:  
 date: 2023-05-20
 comments: true
@@ -7,7 +7,6 @@ draft: false
 categories:
     - "C++"
     - "C++ STL"
-    - "STL 容器"
 ---
 
 
@@ -24,7 +23,6 @@ categories:
   - [3.2. 常用迭代器](#32-常用迭代器)
   - [3.3. 迭代器分类](#33-迭代器分类)
   - [3.4. 不同容器支持的迭代器类型](#34-不同容器支持的迭代器类型)
-
 
 
 # 1. 什么是容器
