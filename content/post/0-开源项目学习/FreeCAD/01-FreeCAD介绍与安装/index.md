@@ -1,5 +1,5 @@
 ---
-title: "第1节 - FreeCAD介绍与安装"
+title: "01 - FreeCAD编译安装"
 description: 
 date: 2025-05-17
 math: 
