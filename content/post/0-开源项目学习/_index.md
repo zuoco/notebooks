@@ -1,5 +1,5 @@
 ---
-title: "【开源项目学习】"
+title: "《 开源项目学习 》"
 menu:
   main:
       identifier: "opensource"

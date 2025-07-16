@@ -1,6 +1,6 @@
 ---
 title: "数据结构"
-description: "Rust专题"
+description: "数据结构专题"
 slug: "data-structure"
 image: "AAA.jpg"
 style:

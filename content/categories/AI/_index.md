@@ -1,6 +1,6 @@
 ---
 title: "AI"
-description: "学习AI大模型的原理与应用等等"
+description: "学习AI大模型的使用"
 slug: "grand-model"
 image: "AAA.jpg"
 style:

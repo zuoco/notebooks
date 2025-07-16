@@ -1,9 +1,9 @@
 ---
-title: "【FreeCAD】"
+title: "《 FreeCAD 》"
 menu:
   main:
     identifier: "freecad"
     parent: "opensource"
-    name: "FreeCAD"
+    name: "《 FreeCAD 》"
     weight: 20
 ---
