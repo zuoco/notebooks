@@ -1,9 +1,9 @@
 ---
-title: "【链接、装载与库】"
+title: "《 Linkers & Loaders 》"
 menu:
   main:
       identifier: "compiler-link-lib"
-      name: "<链接、装载与库>"
+      name: "<Linkers & Loaders>"
       weight: 60
       params:
           icon: llvm
