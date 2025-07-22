@@ -1,5 +1,6 @@
 ---
 title: "《 内存管理 》"
+date: 2024-05-06  
 menu:
   main:
     identifier: "linux-memory"

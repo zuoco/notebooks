@@ -1,5 +1,6 @@
 ---
-title: "《 Linux内核 》"
+title: "《 Linux内核 》" 
+date: 2023-09-05  
 menu:
   main:
     identifier: "linux"
