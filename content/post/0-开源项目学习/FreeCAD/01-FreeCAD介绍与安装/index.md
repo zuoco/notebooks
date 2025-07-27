@@ -1,7 +1,7 @@
 ---
-title: "01 —— FreeCAD介绍以及编译"
+title: "01  —  FreeCAD 介绍以及编译"
 description: 
-date: 2025-05-17
+date: 2025-04-20
 math: 
 license: 
 hidden: false

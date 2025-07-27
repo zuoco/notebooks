@@ -17,8 +17,8 @@ categories:
 - [2. 平台实现](#2-平台实现)
 
 
-# 1. 抽象基类
-需要对计算机网络有一点了解，实际就是封装了常用的网络接口而已。  
+# 1. **抽象基类**
+需要对系统网络接口有一点了解，实际就是封装了常用的网络接口而已。  
 ```cpp
 class IArchNetwork : public IInterface
 {
@@ -100,8 +100,8 @@ public:
 };
 ```
 
-# 2. 平台实现
-提供了Unix和Windows平台上的实现，但是这里就不讲了，就是将平台的系统调用封装了一下。  
+# 2. **平台实现**
+提供了Unix和Windows平台上的实现，就是将平台的系统调用封装了一下，具体就是系统调用的知识点，和跨平台主题无关就不细讲了。  
 **Windows** 
 ```cpp
 #define ARCH_NETWORK ArchNetworkWinsock

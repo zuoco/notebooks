@@ -1,5 +1,5 @@
 ---
-title: "运算符重载"
+title: "03 — C++运算符重载"
 description:
 date: 2023-03-18
 image: 
@@ -13,8 +13,12 @@ categories:
 ---
 
 
+- [1. **赋值运算符“operator=”**](#1-赋值运算符operator)
+- [1.1. **拷贝赋值**](#11-拷贝赋值)
+- [1.2. **移动赋值**](#12-移动赋值)
 
-# 4. 赋值运算符“operator=”
+
+# 1. **赋值运算符“operator=”**
 ```cpp
 int main()
 {
@@ -24,7 +28,7 @@ int main()
 }
 ```
 
-## 拷贝赋值
+# 1.1. **拷贝赋值**
 ```cpp
 struct MyClass {
     int a;
@@ -61,7 +65,7 @@ public:
 };
 ```
 
-## 移动赋值
+# 1.2. **移动赋值**
 ```cpp
 struct MyClass {
     std::vector<int> vec; // 支持移动语义

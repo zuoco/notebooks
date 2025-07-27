@@ -14,16 +14,15 @@ categories:
 ---
 
 
-- [1. **rb\_erase()**](#1-rb_erase)
-- [2. **\_\_rb\_erase\_augmented()**](#2-__rb_erase_augmented)
+- [1. 移除节点的用户接口](#1-移除节点的用户接口)
 	- [2.1. **\_\_rb\_erase\_color()**](#21-__rb_erase_color)
 
 
 
 
-# 1. **rb_erase()**
+# 1. 移除节点的用户接口
+**rb_erase()**： include/linux/rbtree.h   
 ```c
-// include/linux/rbtree.h
 extern void rb_erase(struct rb_node *, struct rb_root *);
 
 /** 
@@ -41,15 +40,17 @@ void rb_erase(struct rb_node *node, struct rb_root *root)
 	 *    a. node没有孩子，且是黑色，返回node的父节点。    
      *    b. node有左右孩子，并且后继节点是黑色，返回后继节点的父节点。     
 	 */
-	rebalance = __rb_erase_augmented(node, root, &dummy_callbacks);  
+	rebalance = __rb_erase_augmented(node, root, &dummy_callbacks);  // 完成部分平衡修复工作
 	if (rebalance) {
+		// 进一步完成平衡
 		____rb_erase_color(rebalance, root, dummy_rotate); 
     }
 }
 ```
 
+---
 
-# 2. **__rb_erase_augmented()**
+**__rb_erase_augmented()**： 删除节点，并完成初步的平衡工作，尽可能在该函数内完成平衡，如果情况简单，该函数内部就完成了，就返回NULL，如果情况比较复杂，该函数内部只能完成部分，就返回待平衡节点地址。        
 ```c
 /* tools/lib/rbtree.c */
 static __always_inline struct rb_node *
@@ -191,13 +192,15 @@ __rb_erase_augmented(struct rb_node *node, struct rb_root *root,
 }
 ```
 
+---
 
-## 2.1. **__rb_erase_color()**    
+**__rb_erase_color()**： 在__rb_erase_augmented()之后调用，进一步完成平衡工作。       
 ```c
 static __always_inline void
 ____rb_erase_color(struct rb_node *parent, struct rb_root *root,
 	void (*augment_rotate)(struct rb_node *old, struct rb_node *new))
 {
-    // 待续
+    // 和 rb_insert_color() 的流程差不多
+	// 根据parent的兄弟节点的颜色分布，分情况讨论。
 }
 ```

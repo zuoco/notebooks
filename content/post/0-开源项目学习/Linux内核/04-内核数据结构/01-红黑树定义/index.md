@@ -15,8 +15,9 @@ categories:
 
 - [1. **什么是红黑树**](#1-什么是红黑树)
 - [2. **Linux内核红黑树源码**](#2-linux内核红黑树源码)
-	- [2.1. **节点结构**](#21-节点结构)
-	- [2.2. **树结构**](#22-树结构)
+	- [2.1. **节点**](#21-节点)
+	- [2.2. **树**](#22-树)
+	- [2.3. **红黑树操作**](#23-红黑树操作)
 
 
 # 1. **什么是红黑树**
@@ -30,12 +31,12 @@ categories:
 
 
 # 2. **Linux内核红黑树源码**
-## 2.1. **节点结构**
-- 源文件： /include/linux/rbtree_types.h    
+## 2.1. **节点**
+源文件： /include/linux/rbtree_types.h    
 ```c
 // 节点结构
 struct rb_node {
-	unsigned long  __rb_parent_color;   // 通常用最低位来表示本节点的颜色（0 表示红色，1 表示黑色），而其余高位用于存储父节点的地址。
+	unsigned long  __rb_parent_color;   // 用最低位来表示本节点的颜色（0 表示红色，1 表示黑色），而其余高位用于存储父节点的地址。
 	struct rb_node *rb_right;
 	struct rb_node *rb_left;
 } __attribute__((aligned(sizeof(long))));
@@ -46,21 +47,19 @@ struct rb_root {
 };
 ```
 - 节点定义的是树的链接关系，不包含用户数据。实际使用中需要定义一个用户结构（user_data），用户结构中包含节点(node)和用户数据(data)。   
-- 同样，树结构中也是只有节点，树结构本身不管理用户数据，当我们遍历树并访问用户数据(data)时，就需要先通过node地址找到user_data的地址，然后使用`.`/`->`来访问data成员。   
+- 同样，树结构中也是只有节点，树结构本身不管理用户数据，当我们遍历树并访问用户数据(data)时，就需要先找到树中的节点node，然后根据node地址找到user_data的地址，然后使用`.`/`->`来访问用户结构中的data成员。   
 
 
-## 2.2. **树结构**
-
-- 源文件: /include/linux/rbtree_types.h          
-
-1. **创建一个空树**  
+## 2.2. **树**
+源文件: /include/linux/rbtree_types.h          
 ```c
-#define RB_ROOT (struct rb_root) { NULL, }
+#define RB_ROOT (struct rb_root) { NULL, } // 创建一个空树
 ```
 
-- 源文件： /include/linux/rbtree.h    
+## 2.3. **红黑树操作**
+**提取出父节点的地址**（去除颜色信息），父节点地址和当前节点的颜色保存在一个unsigned long成员中：    
 
-2. **提取出父节点的地址**（去除颜色信息），参考节点结构：   比较麻烦的是Case2-2和Case4-2-2，Case2-2就是删除一个黑色节点，导致经过该节点的路径中黑色节点少了一个，这违反了红黑树的平衡特性。而Case4-2-2需要使用后继节点替补被删除的节点，相当强将后继节点从它原本的位置删除，结果还是转换为删除黑色节点的问题了。
+源文件： /include/linux/rbtree.h    
 ```c
 /**
  *  r 是一个指向红黑树节点的指针。   
@@ -69,7 +68,9 @@ struct rb_root {
 #define rb_parent(r)   ((struct rb_node *)((r)->__rb_parent_color & ~3))
 ```
 
-2. **从树节点指针获取包含它的用户结构体指针**：通过树节点地址获取用户节点地址：    
+---
+
+**从树节点指针获取包含它的用户结构体指针**： 通过树的节点地址获取用户节点地址：    
 ```c
 /** 
  * 只是封装了container_of()
@@ -82,12 +83,11 @@ struct rb_root {
 	   ____ptr ? rb_entry(____ptr, type, member) : NULL; \
 	})
 ```
-- 用于遍历、查找、安全删除等操作；
-- 参考节点定义，节点是用户类型的成员，先找到用户结构体的入口地址，然后通过用户类型的`.`/`->`方法访问它的节点成员/数据成员。   
+因为树的节点是用户节点的成员，所以知道树节点地址就可以使用container_of找到用户节点的地址，然后使用`.`/`->`方法访问用户节点的成员。   
 
+---
 
-
-3. **判断树是否为空**：  
+ **判断树是否为空**：  
 ```c
 /**   
  * READ_ONCE()使用volatile直接从内存中读取变量值。
@@ -95,7 +95,9 @@ struct rb_root {
 #define RB_EMPTY_ROOT(root)  (READ_ONCE((root)->rb_node) == NULL)
 ```
 
-4. **判断给定节点是否已经插入树中**：   
+---
+
+**判断给定节点是否已经插入树中**：   
 ```c
 /** 
  *  当节点未被插入树时，__rb_parent_color 被设置为节点自身的地址（即 (unsigned long)(node)），因此通过比较可以判断节点状态。
@@ -103,8 +105,9 @@ struct rb_root {
 #define RB_EMPTY_NODE(node)  \
 	((node)->__rb_parent_color == (unsigned long)(node))
 ```
+---
 
-5. **将节点标记为空节点**： 移除节点后使用：       
+**将节点标记为空节点**： 移除节点后使用：       
 ```c
 /** 
  *  通常在节点被移除红黑树后调用此宏，确保其状态被重置，避免重复插入或未定义行为。
@@ -113,67 +116,28 @@ struct rb_root {
 	((node)->__rb_parent_color = (unsigned long)(node))
 ```
 
-6. **插入新节点**：   
+---
+
+**插入新节点**：   
 ```c
-// less: 用户节点的排序逻辑
-static __always_inline void
-rb_add(struct rb_node *node, struct rb_root *tree,
-       bool (*less)(struct rb_node *, const struct rb_node *))
-{
-	struct rb_node **link = &tree->rb_node;
-	struct rb_node *parent = NULL;
-
-	// 如果 node 小于 parent，向左子树移动；否则向右子树移动，直到 *link 为 NULL，就是要插入的位置。
-	while (*link) {
-		parent = *link;
-		if (less(node, parent))
-			link = &parent->rb_left;
-		else
-			link = &parent->rb_right;
-	}
-
-	rb_link_node(node, parent, link);  	// 将节点连接到树中
-	rb_insert_color(node, tree);	    // 修复平衡
-}
-```
----------插入节点中用到的函数-----------
-```c
-/**	
- *  将新节点链接到红黑树中，将新节点 node 链接到红黑树中，作为 parent 的子节点，并更新 rb_link 指向新节点。
- */
-static inline void rb_link_node(struct rb_node *node, struct rb_node *parent, struct rb_node **rb_link)
-{
-	node->__rb_parent_color = (unsigned long)parent;   // 保存父节点信息
-	node->rb_left = node->rb_right = NULL;             // 初始化新节点
-
-	*rb_link = node;
-}
-
-// 在 RCU（Read-Copy-Update）同步模型下，将新节点 node 链接到红黑树中。
-// 用于需要 RCU 保护的红黑树插入操作，如并发读写场景。
-static inline void rb_link_node_rcu(struct rb_node *node, struct rb_node *parent, struct rb_node **rb_link)
-{
-	node->__rb_parent_color = (unsigned long)parent;
-	node->rb_left = node->rb_right = NULL;
-
-	rcu_assign_pointer(*rb_link, node);
-}
-
-/** 
- *  插入新节点后修复红黑树的平衡性。
- */
-extern void rb_insert_color(struct rb_node *, struct rb_root *); // 这个函数比较长，后面单独章节介绍实现
+// less: 用户节点的排序逻辑，
+// 将node插入到树中，并修复平衡。
+void rb_add(struct rb_node *node, struct rb_root *tree, bool (*less)(struct rb_node *, const struct rb_node *));
 ```
 
-7. **移除节点**： 
+---
+
+**移除节点**： 
 ```c
 /** 
  * 从红黑树中删除指定节点，并修复树的平衡性。
  */
-extern void rb_erase(struct rb_node *, struct rb_root *);   // 这个函数比较长，后面单独章节介绍实现
+void rb_erase(struct rb_node *, struct rb_root *);  
 ```
 
-8. **树遍历**：     
+---
+
+**树遍历**：     
 ```c
 /* 中序遍历 */
 extern struct rb_node *rb_next(const struct rb_node *);   // 中序后继节点
@@ -197,10 +161,9 @@ extern struct rb_node *rb_next_postorder(const struct rb_node *);   // 返回当
 - 中序遍历用于有序访问（如最小值到最大值）。   
 - { n = rb_entry_safe(rb_next_postorder(&pos->field), typeof(*pos), field); 1; }，使用了GCC的扩展语法 —— 复合语句表达式：`{expression; 1;};`,始终返回1。
 
+---
 
-
-
-10. **替换节点**： 直接替换节点，无需重新平衡树：  
+**替换节点**： 直接替换节点，无需重新平衡树：  
 ```c
 /** 
  *  将 victim 节点从红黑树中替换为 new 节点。
@@ -220,9 +183,9 @@ extern void rb_replace_node_rcu(struct rb_node *victim, struct rb_node *new,
 				struct rb_root *root);
 ```
 
+---
 
-
-11. **查找节点**  
+**查找节点**  
 ```c
 /**
  * 查找与 node 等价的节点
@@ -255,7 +218,10 @@ rb_find_add(struct rb_node *node, struct rb_root *tree,
 	return NULL;
 }
 ```
-12. **仅查找**  
+
+---
+
+**仅查找**  
 ```c
 /**
  *  返回匹配的节点指针，若未找到，返回 NULL。
@@ -281,15 +247,18 @@ rb_find(const void *key, const struct rb_root *tree,
 }
 ```
 
+---
 
-13.  **遍历红黑树中所有与 key 等价的节点，按中序顺序依次访问** 
+**查找红黑树中所有与 key 等价的节点，按中序顺序依次访问** 
 ```c
 #define rb_for_each(node, key, tree, cmp) \
 	for ((node) = rb_find_first((key), (tree), (cmp)); \
 	     (node); (node) = rb_next_match((key), (node), (cmp)))
 ```
 
-14. **查找与 key 等价的 最左边的节点**:
+---
+
+**查找与 key 等价的 最左边的节点**:
 ```c
 /**
  * 若找到：  返回最左边的匹配节点指针。
@@ -320,7 +289,9 @@ rb_find_first(const void *key, const struct rb_root *tree,
 - 处理重复键，与 rb_next_match 配合使用，实现完整的匹配项遍历。
 
 
-15. **从当前节点 node 开始，查找与 key 等价的 下一个节点**
+---
+
+**从当前节点 node 开始，查找与 key 等价的 下一个节点**
 ```c
 /**
  *  若找到：  返回下一个匹配的节点指针。

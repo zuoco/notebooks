@@ -15,8 +15,59 @@ categories:
 
 
 
-# 1. **插入节点源码** 
-红黑树第一篇讲到调用插入函数`rb_add`插入节点时会调用两个重要函数，`rb_link_node`，`rb_insert_color`。其中rb_link_node用来将新节点链接到树中，而rb_insert_color用来在插入后修复平衡，本片章重点讲解该函数。    
+# 1. **插入节点的用户接口**   
+红黑树第一篇讲到调用插入函数`rb_add`插入节点时会调用两个重要函数，`rb_link_node`，`rb_insert_color`。其中rb_link_node用来将新节点链接到树中，而rb_insert_color用来在插入后修复平衡。      
+```c
+// less: 用户节点的排序逻辑
+static __always_inline void
+rb_add(struct rb_node *node, struct rb_root *tree,
+       bool (*less)(struct rb_node *, const struct rb_node *))
+{
+	struct rb_node **link = &tree->rb_node;
+	struct rb_node *parent = NULL;
+
+	// 如果 node 小于 parent，向左子树移动；否则向右子树移动，直到 *link 为 NULL，就是要插入的位置。
+	while (*link) {
+		parent = *link;
+		if (less(node, parent))
+			link = &parent->rb_left;
+		else
+			link = &parent->rb_right;
+	}
+
+	rb_link_node(node, parent, link);  	// 将节点连接到树中
+	rb_insert_color(node, tree);	    // 修复平衡
+}
+```
+
+---
+
+```c
+/**	
+ *  将新节点链接到红黑树中，将新节点 node 链接到红黑树中，作为 parent 的子节点，并更新 rb_link 指向新节点。
+ */
+static inline void rb_link_node(struct rb_node *node, struct rb_node *parent, struct rb_node **rb_link)
+{
+	node->__rb_parent_color = (unsigned long)parent;   // 保存父节点信息
+	node->rb_left = node->rb_right = NULL;             // 初始化新节点
+
+	*rb_link = node;
+}
+
+// 在 RCU（Read-Copy-Update）同步模型下，将新节点 node 链接到红黑树中。
+// 用于需要 RCU 保护的红黑树插入操作，如并发读写场景。
+static inline void rb_link_node_rcu(struct rb_node *node, struct rb_node *parent, struct rb_node **rb_link)
+{
+	node->__rb_parent_color = (unsigned long)parent;
+	node->rb_left = node->rb_right = NULL;
+
+	rcu_assign_pointer(*rb_link, node);
+}
+```
+
+---
+
+**重点函数：**
 ```c
 // tools/lib/rbtree.c  
 // 新节点默认初始化为红色。

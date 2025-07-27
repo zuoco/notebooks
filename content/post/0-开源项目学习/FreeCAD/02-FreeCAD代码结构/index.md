@@ -1,7 +1,7 @@
 ---
-title: "02 —— FreeCAD代码目录结构"
+title: "02  —  FreeCAD 代码结构"
 description: 
-date: 2025-07-17
+date: 2025-05-02
 image: 
 math: 
 license: 
@@ -24,20 +24,12 @@ categories:
     ├── conda
     ├── contrib
     ├── data              # 示例
-    ├── LICENSE
-    ├── package
-    ├── pixi.lock
-    ├── pixi.toml
-    ├── PRIVACY_POLICY.md
-    ├── README.md
-    ├── requirements.txt
-    ├── rpkg.macros
-    ├── SECURITY.md
-    ├── CODE_OF_CONDUCT.md
-    ├── CMakePresets.json
-    └── CMakeLists.txt
+    ├── CMakeLists.txt
+    └── 其他
 ```
-源码目录：  
+---
+
+src源码目录，其中App、Base、Main组成提个无UI运行程序：  
 ```bash
 ├── src
 │   ├── 3rdParty             # 三方库，K维树、网格等等。
@@ -54,23 +46,15 @@ categories:
 │   ├── XDGData              # Linux桌面相关文件
 │   ├── zipios++             # 压缩文件读写
 │   ├── CMakeLists.txt
-│   ├── boost_geometry.hpp   
-│   ├── boost_signals2.hpp   
-│   ├── config.h.cmake
-│   ├── boost_graph_adjacency_list.hpp 
-│   ├── boost_graph_reverse_graph.hpp
-│   ├── Ext
-│   ├── FCConfig.h
-│   ├── FCGlobal.h
-│   ├── boost_python.hpp
-│   ├── __init__.py
-│   ├── LibraryVersions.h.cmake
-│   ├── QtCore.h.cmake
-│   ├── QtOpenGL.h.cmake
-│   ├── SMESH_Version.h.cmake
-│   └── boost_regex.hpp
+│   └── 其他
 ```
-源码中的模块目录：   
+Base目录下是FreeCAD的类型系统，接口类，抽象类等等。  
+App目录下是属性系统，文档对象相关的代码。   
+Main目录下就是不同模式的main函数了。  
+
+---
+
+源码中Mod目录下的内容：   
 ```bash
 src/Mod/
 ├── Part            # 创建基础的3D元素，圆柱、立方体等等
@@ -88,28 +72,9 @@ src/Mod/
 ├── Points             # 点云
 ├── ReverseEngineering # 从点云创建实体
 ├── Robot              # 机器人
-├── __init__.py
-├── Inspection
-├── Help
-├── Measure
-├── Idf
-├── Import
-├── mod.dox
-├── CMakeLists.txt
-├── AddonManager
-├── BIM
-├── Plot             
-├── Sandbox
-├── Show
-├── Cloud
-├── Spreadsheet
-├── Start
-├── Surface
-├── TechDraw
-├── TemplatePyMod
-├── Test
-├── Tux
-└── Web
+└── 其他
 ```
+
+
 
 

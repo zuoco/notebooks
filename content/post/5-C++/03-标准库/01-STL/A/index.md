@@ -11,7 +11,6 @@ draft: false
 categories:
     - "C++"
     - "C++ STL"
-    - "C++ STL"
 ---
 
 

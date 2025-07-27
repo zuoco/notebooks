@@ -13,11 +13,11 @@ categories:
 ---
 
 
-- [1. 抽象类型](#1-抽象类型)
-- [2. 实现](#2-实现)
+- [1. **抽象类型**](#1-抽象类型)
+- [2. **实现**](#2-实现)
 
 
-# 1. 抽象类型
+# 1. **抽象类型**
 ```cpp
 class IArchLog : public IInterface
 {
@@ -38,7 +38,7 @@ public:
 };
 ```
 
-# 2. 实现
+# 2. **实现**
 **Windows**   
 ```cpp
 #define ARCH_LOG ArchLogWindows

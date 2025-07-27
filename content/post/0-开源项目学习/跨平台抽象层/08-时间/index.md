@@ -12,11 +12,11 @@ categories:
     - "跨平台抽象层-C++"
 ---
 
-- [1. 抽象类](#1-抽象类)
-- [2. 实现类](#2-实现类)
+- [1. **抽象类**](#1-抽象类)
+- [2. **实现类**](#2-实现类)
 
 
-# 1. 抽象类
+# 1. **抽象类**
 跨平台高精度时间获取接口，提供统一、高精度的时间基准，用于性能分析、超时控制等场景。  
 ```cpp
 class IArchTime : public IInterface
@@ -26,7 +26,7 @@ public:
 };
 ```
 
-# 2. 实现类
+# 2. **实现类**
 **Windows**    
 ```cpp
 class ArchTimeWindows : public IArchTime

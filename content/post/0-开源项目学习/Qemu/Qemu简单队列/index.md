@@ -57,6 +57,8 @@ struct {                                                                \
 }
 ```
 
+
+
 ## 1.1. 使用案例
 &emsp;&emsp;qemu-8.2.2/qemu-img.c     
 ```c

@@ -13,10 +13,10 @@ categories:
 ---
 
 
-- [1. 抽象类型 IArchMultithread](#1-抽象类型-iarchmultithread)
+- [1. **抽象基类 IArchMultithread**](#1-抽象基类-iarchmultithread)
 - [2. 实现类](#2-实现类)
 
-# 1. 抽象类型 IArchMultithread
+# 1. **抽象基类 IArchMultithread**
 IArchMultithread 是一个跨平台多线程抽象接口，继承自 IInterface，定义了线程、互斥锁和条件变量等核心操作。   
 ![](multi-thread.svg)   
 
@@ -73,7 +73,7 @@ public:
 };
 ```
 
-# 2. 实现类
+# 2. **实现类**
 **Windows:**    
 ```cpp
 #define ARCH_MULTITHREAD ArchMultithreadWindows

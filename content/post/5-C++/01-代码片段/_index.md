@@ -1,5 +1,6 @@
 ---
 title: "《 代码片段 》"
+date: 2023-02-05
 menu:
   main:
     identifier: "demo"

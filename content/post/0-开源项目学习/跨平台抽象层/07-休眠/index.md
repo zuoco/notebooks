@@ -12,13 +12,13 @@ categories:
     - "跨平台抽象层-C++"
 ---
 
-- [1. 抽象类型](#1-抽象类型)
-- [2. 实现类型](#2-实现类型)
-    - [2.1. Windows](#21-windows)
-    - [2.2. Unix](#22-unix)
+- [1. **抽象类型**](#1-抽象类型)
+- [2. **实现类型**](#2-实现类型)
+  - [2.1. Windows](#21-windows)
+  - [2.2. Unix](#22-unix)
 
 
-# 1. 抽象类型
+# 1. **抽象类型**
 跨平台线程休眠接口，核心目标是提供精确的、可移植的线程阻塞控制。  
 ```cpp
 class IArchSleep : public IInterface
@@ -29,7 +29,7 @@ public:
 };
 ```
 
-# 2. 实现类型
+# 2. **实现类型**
 ## 2.1. Windows  
 ```cpp
 #define ARCH_SLEEP ArchSleepWindows
