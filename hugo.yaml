@@ -19,7 +19,7 @@ languages:
         weight: 2
         params:
             sidebar:
-                subtitle: 妖魔鬼怪快离开  # 不知道那里用到了
+                subtitle: 好记性不如烂笔头  # 不知道那里用到了
 
 services:
     # Change it to your Disqus shortname before using

@@ -4,6 +4,13 @@
     background-color: $background-color;
 }
 
+/* 代码块容器间距调整 */
+pre.chroma {
+    margin: 1em 0;
+    padding: 1em;
+    overflow-x: auto;
+}
+
 /* Other */
 .chroma .x {
 }

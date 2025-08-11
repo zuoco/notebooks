@@ -44,10 +44,10 @@
         </div>
     </header>
 
-    {{- $subsections := .Sections -}}
-    {{- $pages := .Pages | complement $subsections -}}
+    {{- $subsections := .Sections -}} <!--从当前页面对象获取子章节数据（.Sections），这些通常是当前目录下的子目录内容。-->
+    {{- $pages := .Pages | complement $subsections -}} <!--将页面内容分为普通页面（$pages）和子章节（$subsections）两组-->
     
-    {{- if eq (len $pages) 0 -}}
+    {{- if eq (len $pages) 0 -}}   <!--检查$pages集合是否为空（即普通页面数量为0）-->
         {{/* If there are no normal pages, display subsections in list style, with pagination */}}
         {{/* This happens with taxonomies like categories or tags */}}
         {{- $pages = $subsections -}}

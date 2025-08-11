@@ -1,7 +1,7 @@
 ---
 title: "资源"
 description: 
-date: 2023-07-28
+date: 2024-07-28
 license: 
 hidden: false
 comments: true
@@ -22,10 +22,12 @@ categories:
 6. [HuggingFace](https://huggingface.co/models)   
 7. [魔塔社区： 国产版的HuggingFace](https://www.modelscope.cn/home)    
 8. [AutoDL云算力租用](https://www.autodl.com/home)   
+9. [deepwiki](https://deepwiki.com/)  
+10. [Zread](https://zread.ai/)
 
 
-10. [libkdtree++: 一个用C++模板实现的k维树结构](https://github.com/nvmd/libkdtree)  
-11. [One-KVM： 硬件级远控方案](https://github.com/mofeng-git/One-KVM) 
-12. [KVM-Over-IP: 硬件级远控方案](https://github.com/Nihiue/open-ip-kvm)  
-13. [lwip: 用户态协议栈](https://github.com/lwip-tcpip/lwip)  
-14. [Chili3D： 基于OpenCASCADE、WebAssembly的WebCAD](https://github.com/xiangechen/chili3d)
+11. 10. [libkdtree++: 一个用C++模板实现的k维树结构](https://github.com/nvmd/libkdtree)  
+12. [One-KVM： 硬件级远控方案](https://github.com/mofeng-git/One-KVM) 
+13. [KVM-Over-IP: 硬件级远控方案](https://github.com/Nihiue/open-ip-kvm)  
+14. [lwip: 用户态协议栈](https://github.com/lwip-tcpip/lwip)  
+15. [Chili3D： 基于OpenCASCADE、WebAssembly的WebCAD](https://github.com/xiangechen/chili3d)
