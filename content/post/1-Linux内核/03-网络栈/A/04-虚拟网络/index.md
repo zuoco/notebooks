@@ -9,13 +9,14 @@ hidden: false
 comments: true
 draft: false
 categories:
- - Linux内核
+   - "Linux内核"
+   - "网络"
 ---
 
 - [1. Linux Bridge](#1-linux-bridge)
 - [2. Linux Bond](#2-linux-bond)
 - [3. Linux VLAN](#3-linux-vlan)
-    - [3.1. linux中VLAN的实现方式](#31-linux中vlan的实现方式)
+  - [3.1. linux中VLAN的实现方式](#31-linux中vlan的实现方式)
 
 
 

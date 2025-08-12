@@ -7,6 +7,7 @@ comments: true
 draft: false
 categories:
    - "Linux内核"
+   - "网络"
 ---
 
 # 1. Network-Manager网络管理工具

@@ -7,6 +7,8 @@ comments: true
 draft: false
 categories:
    - "Linux内核"
+   - "网络"
+   - "网络"
 ---
 
 # 1. iproute2

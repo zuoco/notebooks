@@ -6,7 +6,8 @@ hidden: false
 comments: true
 draft: false
 categories:
-  - "Linux内核"
+   - "Linux内核"
+   - "网络"
 ---
 
 # 1. 基本命令选项

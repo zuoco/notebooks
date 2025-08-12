@@ -10,6 +10,7 @@ comments: true
 draft: false
 categories:
     - TCP
+    - 网络
 ---
 
 - [1. 什么时候重传报文](#1-什么时候重传报文)

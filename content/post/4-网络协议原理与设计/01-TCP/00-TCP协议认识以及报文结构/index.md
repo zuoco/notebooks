@@ -10,6 +10,7 @@ comments: true
 draft: false
 categories:
     - TCP
+    - 网络
 ---
 
 - [1. TCP报文结构](#1-tcp报文结构)
@@ -25,7 +26,7 @@ categories:
 # 1. TCP报文结构
 TCP头部由`固定头部`（20字节）、`头部选项`（最长40字节）组成。  
 
-![](./Pic/ip0.png)
+![](tcp.png)
 
 ## 1.1. 固定头部
   
