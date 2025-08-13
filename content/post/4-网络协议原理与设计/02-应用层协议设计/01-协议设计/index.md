@@ -1,5 +1,5 @@
 ---
-title: "网络协议设计（01） — 协议设计的基本思路"
+title: "应用层协议设计的总结"
 description: 
 date: 2024-10-23
 image: 
@@ -9,7 +9,7 @@ hidden: false
 comments: true
 draft: false
 categories:
-    - 网络协议设计
+    - 网络协议原理与设计
 ---
 
 - [1. **流式协议**](#1-流式协议)

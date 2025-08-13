@@ -7,11 +7,10 @@ math:
 license: 
 hidden: false
 comments: true
-draft: false
+draft: true
 categories:
   - FreeCAD
 ---
-
 
 我们先看一下Part-Design模块目录下都有什么：  
 ```bash

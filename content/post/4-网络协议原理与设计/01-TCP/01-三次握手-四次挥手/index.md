@@ -1,7 +1,7 @@
 ---
 title: "TCP的“三次握手”与“四次挥手”"
 description: "通过抓取TCP报文，了解TCP的“三次握手”与“四次挥手”。"
-date: 2023-06-16
+date: 2023-06-17
 image: 
 math: 
 license: 
@@ -10,7 +10,7 @@ comments: true
 draft: false
 categories:
     - TCP
-    - 网络
+    - 网络协议原理与设计
 ---
 
 - [1. tcpdump 抓取Tcp报文](#1-tcpdump-抓取tcp报文)

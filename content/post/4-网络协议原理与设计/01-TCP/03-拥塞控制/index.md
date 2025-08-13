@@ -1,7 +1,7 @@
 ---
 title: "TCP拥塞控制"
 description: "简单理解TCP流控机制最大化利用带宽，并保证可靠性"
-date: 2023-06-16
+date: 2023-06-19
 image: 
 math: 
 license: 
@@ -10,7 +10,7 @@ comments: true
 draft: false
 categories:
     - TCP
-    - 网络
+    - 网络协议原理与设计
 ---
 
 

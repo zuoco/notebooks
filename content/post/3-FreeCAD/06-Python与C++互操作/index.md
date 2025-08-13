@@ -13,6 +13,35 @@ categories:
 ---
 
 
+先简单梳理一下，以后慢慢研究。
+
+# FreeCAD的Python绑定机制
+
+## 1. 基础架构：PyObjectBase
+
+FreeCAD中所有需要导出到Python的C++类都继承自`PyObjectBase`基类。这个基类提供了C++对象与Python对象之间的桥接功能，包含了Python对象头部结构和各种Python C API的包装方法。
+
+## 2. XML接口定义
+
+FreeCAD使用XML文件来定义Python绑定的接口。例如，Mesh模块的Python绑定在`MeshPy.xml`中定义，其中指定了导出的类名、命名空间、继承关系和要导出的方法。
+
+## 3. 代码生成系统
+
+FreeCAD使用模板系统自动从XML定义生成C++绑定代码。这个系统会生成必要的C++包装器代码，实现Python对象与C++对象之间的转换。
+
+## 4. Python模块注册
+
+每个模块都实现一个继承自`Py::ExtensionModule`的类来创建Python模块。这个模块类注册了要导出的函数和方法。
+
+## 5. 模块初始化
+
+通过`PyMOD_INIT_FUNC`宏定义的模块入口点函数，调用`initModule()`函数创建并注册模块到Python命名空间。最终通过`Base::Interpreter().addModule()`将扩展模块添加到Python环境中。
+
+
+
+
+---
+
 
 
 # PyObjectBase 类型

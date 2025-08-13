@@ -1,7 +1,7 @@
 ---
 title: "TCP报文重传"
 description: "TCP可靠性之“报文重传"
-date: 2023-06-16
+date: 2023-06-18
 image: 
 math: 
 license: 
@@ -10,7 +10,7 @@ comments: true
 draft: false
 categories:
     - TCP
-    - 网络
+    - 网络协议原理与设计
 ---
 
 - [1. 什么时候重传报文](#1-什么时候重传报文)

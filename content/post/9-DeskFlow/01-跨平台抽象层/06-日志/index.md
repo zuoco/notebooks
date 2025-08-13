@@ -7,7 +7,7 @@ math:
 license: 
 hidden: false
 comments: true
-draft: false
+draft: true
 categories:
     - "DeskFlow"
     - "设计模式"
@@ -15,10 +15,10 @@ categories:
 
 
 - [1. **ARCH层日志模块设计**](#1-arch层日志模块设计)
-    - [1.1. **平台实现**](#11-平台实现)
-        - [1.1.1. **Unix**](#111-unix)
-        - [1.1.2. **Windows**](#112-windows)
-    - [1.2. **日志级别系统**](#12-日志级别系统)
+  - [1.1. **平台实现**](#11-平台实现)
+    - [1.1.1. **Unix**](#111-unix)
+    - [1.1.2. **Windows**](#112-windows)
+  - [1.2. **日志级别系统**](#12-日志级别系统)
 - [2. **适配器层**](#2-适配器层)
 
 
