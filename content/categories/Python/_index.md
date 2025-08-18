@@ -4,6 +4,6 @@ description:
 slug: "python"
 image: "AAA.jpeg"
 style:
-    background: "#FFA500"
+    background: "#4169E1"
     color: "#FFFFFF"
 ---

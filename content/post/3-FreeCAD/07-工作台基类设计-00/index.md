@@ -1,5 +1,5 @@
 ---
-title: "FreeCAD（06）— 工作台"
+title: "FreeCAD（07）— 工作台"
 description: 
 date: 2025-08-10
 image: 
@@ -7,7 +7,7 @@ math:
 license: 
 hidden: false
 comments: true
-draft: 
+draft: false
 categories:
   - FreeCAD
 ---

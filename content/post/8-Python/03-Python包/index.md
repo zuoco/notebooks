@@ -1,13 +1,15 @@
 ---
 title: "Python编成中的 “__init__.py” 文件是干什么的？"
 description: 
-date: 2025-08-12
+date: 2024-08-12
 image: 
 math: 
 license: 
 hidden: false
 comments: true
 draft: true
+categories:
+    - Python
 ---
 
 

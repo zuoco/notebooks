@@ -1,5 +1,5 @@
 ---
-title: "FreeCAD（07）— 零件设计工作台-PartDesign"
+title: "FreeCAD（08）— 零件设计工作台-PartDesign"
 description: 
 date: 2025-08-11
 image: 
@@ -7,7 +7,7 @@ math:
 license: 
 hidden: false
 comments: true
-draft: true
+draft: flase
 categories:
   - FreeCAD
 ---
